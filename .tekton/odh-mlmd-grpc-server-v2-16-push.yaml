@@ -19,6 +19,8 @@ metadata:
   name: odh-mlmd-grpc-server-v2-16-on-push
   namespace: rhoai-tenant
 spec:
+  timeouts: 
+    pipelines: 4h
   params:
   - name: git-url
     value: '{{source_url}}'

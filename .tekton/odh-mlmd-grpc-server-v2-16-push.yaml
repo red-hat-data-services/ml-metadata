@@ -284,16 +284,14 @@ spec:
         value: $(tasks.prefetch-dependencies.results.SOURCE_ARTIFACT)
       - name: CACHI2_ARTIFACT
         value: $(tasks.prefetch-dependencies.results.CACHI2_ARTIFACT)
-      - name: IMAGE_APPEND_PLATFORM
-        value: "true"
       runAfter:
       - prefetch-dependencies
       taskRef:
         params:
         - name: name
-          value: buildah-remote-oci-ta
+          value: buildah-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-buildah-remote-oci-ta:0.2@sha256:bd704cf7eb042f1fd48bfbd872a3f5a3632697a117602e242653ed323e6db52e
+          value: quay.io/konflux-ci/tekton-catalog/task-buildah-oci-ta:0.2@sha256:43aecf28e07b3cdf74f85524354b665ea584f2282a1f40ec32f64c6a9b036cd3
         - name: kind
           value: task
         resolver: bundles

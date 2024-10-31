@@ -33,6 +33,15 @@ spec:
     value: ml_metadata/tools/docker_server/Dockerfile.konflux
   - name: path-context
     value: .
+  taskRunSpecs:
+    - pipelineTaskName: build-container
+      stepSpecs:
+        - name: build
+          computeResources:
+            requests:
+              memory: 10Gi
+            limits:
+              memory: 10Gi
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while reducing network traffic.

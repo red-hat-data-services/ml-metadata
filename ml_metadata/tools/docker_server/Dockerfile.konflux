@@ -63,4 +63,5 @@ LABEL com.redhat.component="odh-mlmd-grpc-server-container" \
       io.k8s.display-name="odh-mlmd-grpc-server" \
       io.openshift.tags="odh-mlmd-grpc-server" \
       io.k8s.description="odh-mlmd-grpc-server" \
+      io.openshift.tags="" \
       com.redhat.license_terms="https://www.redhat.com/licenses/Red_Hat_Standard_EULA_20191108.pdf"

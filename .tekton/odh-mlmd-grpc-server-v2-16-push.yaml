@@ -33,6 +33,8 @@ spec:
     value: ml_metadata/tools/docker_server/Dockerfile.konflux
   - name: path-context
     value: .
+  - name: prefetch-input
+    value: rpm
   taskRunSpecs:
     - pipelineTaskName: build-container
       stepSpecs:
@@ -246,6 +248,8 @@ spec:
         value: $(params.output-image).prefetch
       - name: ociArtifactExpiresAfter
         value: $(params.image-expires-after)
+      - name: dev-package-managers
+        value: "true"
       runAfter:
       - clone-repository
       taskRef:

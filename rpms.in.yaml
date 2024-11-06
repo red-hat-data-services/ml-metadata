@@ -1,0 +1,16 @@
+contentOrigin:
+  repofiles:
+    - ubi.repo
+packages:
+  - which   
+  - patch   
+  - gcc   
+  - clang   
+  - cmake   
+  - make   
+  - openssl   
+  - ca-certificates   
+  - unzip   
+  - git   
+  - findutils   
+  - python3

@@ -14,3 +14,4 @@ packages:
   - git   
   - findutils   
   - python3
+  - tzdata

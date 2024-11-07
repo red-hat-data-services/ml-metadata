@@ -29,6 +29,15 @@ spec:
     value: .
   - name: prefetch-input
     value: rpm
+  taskRunSpecs:
+    - pipelineTaskName: build-container
+      stepSpecs:
+        - name: build
+          computeResources:
+            requests:
+              memory: 16Gi
+            limits:
+              memory: 20Gi
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while maintaining trust after pipeline customization.
@@ -176,6 +185,8 @@ spec:
         value: $(params.output-image).prefetch
       - name: ociArtifactExpiresAfter
         value: $(params.image-expires-after)
+      - name: dev-package-managers
+        value: "true"
       runAfter:
       - clone-repository
       taskRef:

@@ -107,7 +107,7 @@ bool ParseMetadataStoreServerConfigOrDie(
 // were set and dies if only some of them were provided.
 bool ParseMySQLFlagsBasedServerConfigOrDie(
     const std::string& host, const int port, const std::string& database,
-    const std::string& user, const std::string& password,
+    const std::string& user, const std::string& password, const bool skip_db_creation,
     const std::string& sslcert, const std::string& sslkey,
     const std::string& sslrootcert, const std::string& sslcapath,
     const std::string& sslcipher, const bool verify_server_cert,
@@ -131,6 +131,7 @@ bool ParseMySQLFlagsBasedServerConfigOrDie(
   config->set_database(database);
   config->set_user(user);
   config->set_password(password);
+  config->set_skip_db_creation(skip_db_creation);
   bool has_ssl_config;
   if (!sslcert.empty()) {
     has_ssl_config = true;
@@ -355,6 +356,9 @@ DEFINE_string(mysql_config_user, "",
               "The mysql user name to use (Optional parameter)");
 DEFINE_string(mysql_config_password, "",
               "The mysql user password to use (Optional parameter)");
+DEFINE_bool(mysql_config_skip_db_creation, false,
+            "True if skipping database instance creation during ML Metadata "
+            "service initialization. By default it is false.");
 DEFINE_string(mysql_config_sslcert, "",
               "This parameter specifies the file name of the client SSL certificate.");
 DEFINE_string(mysql_config_sslkey, "",
@@ -444,6 +448,7 @@ BuildDefaultConnectionConfig() {
           (FLAGS_mysql_config_database),
           (FLAGS_mysql_config_user),
           (FLAGS_mysql_config_password),
+          (FLAGS_mysql_config_skip_db_creation),
           (FLAGS_mysql_config_sslcert),
           (FLAGS_mysql_config_sslkey),
           (FLAGS_mysql_config_sslrootcert),
@@ -490,6 +495,7 @@ BuildMySQLConnectionConfig() {
           (FLAGS_mysql_config_database),
           (FLAGS_mysql_config_user),
           (FLAGS_mysql_config_password),
+          (FLAGS_mysql_config_skip_db_creation),
           (FLAGS_mysql_config_sslcert),
           (FLAGS_mysql_config_sslkey),
           (FLAGS_mysql_config_sslrootcert),

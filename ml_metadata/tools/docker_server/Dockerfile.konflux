@@ -4,6 +4,21 @@ FROM quay.io/konflux-ci/bazel5-ubi8@sha256:073077dd02506ee51aab7f823f9ce24e39a09
 
 USER root
 
+RUN dnf install -y --skip-broken \
+  which \
+  patch \
+  gcc \
+  clang \
+  cmake \
+  make \
+  openssl \
+  ca-certificates \
+  unzip \
+  git \
+  findutils \
+  python3
+
+
 COPY . /mlmd-src
 WORKDIR /mlmd-src
 RUN bazel version

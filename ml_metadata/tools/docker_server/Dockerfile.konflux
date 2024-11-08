@@ -22,7 +22,7 @@ RUN dnf install -y \
 COPY . /mlmd-src
 WORKDIR /mlmd-src
 
-RUN ls -la ./cachi2/output
+RUN ls -la ./cachi2
 
 COPY ./cachi2/output/deps/generic/* ./cachi2/output/deps/generic
 

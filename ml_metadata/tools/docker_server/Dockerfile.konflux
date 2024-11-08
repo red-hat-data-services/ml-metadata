@@ -18,6 +18,7 @@ RUN dnf install -y \
   findutils \
   python3
 
+RUN ls -la ./cachi2
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src

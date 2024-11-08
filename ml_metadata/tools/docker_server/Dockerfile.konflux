@@ -19,7 +19,7 @@ RUN dnf install -y \
   python3
 
 RUN ls -la ./cachi2/output/deps/generic
-COPY ./cachi2/output/deps/generic/* ./cachi2/output/deps/generic
+#COPY ./cachi2/output/deps/generic/* ./cachi2/output/deps/generic
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src

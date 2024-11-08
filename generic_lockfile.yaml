@@ -62,6 +62,8 @@ artifacts:
   - name: "pybind11"
     download_url: "https://github.com/pybind/pybind11/archive/v2.10.1.tar.gz"
     target: "pybind11-2.10.1"
+    checksums: 
+      sha256: "111014b516b625083bef701df7880f78c2243835abdb263065b6b59b960b6bad"
   - name: "com_googlesource_code_re2"
     download_url: "https://github.com/google/re2/archive/03da4fc0857c285e3a26782f6bc8931c4c950df4.tar.gz"
     target: "re2-03da4fc0857c285e3a26782f6bc8931c4c950df4"
@@ -91,5 +93,3 @@ artifacts:
     target: "zetasql-2024.08.2"
     checksums:
       sha256: "8b900be766e6015b27aba6bcde965ac37f9c22900458e4e10cca7f4c84406e21"
-
-

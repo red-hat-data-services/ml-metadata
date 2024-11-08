@@ -11,10 +11,10 @@ artifacts:
     checksums:
       sha256: "5308fc1d8865406a49427ba24a9ab53087f17f5266a7aabbfc28823f3916e1ca"
   - name: "rules_foreign_cc"
-    download_url: "https://github.com/bazelbuild/rules_foreign_cc/archive/refs/tags/0.9.0.tar.gz"
-    target: "rules_foreign_cc-0.9.0"
+    download_url: "https://github.com/bazel-contrib/rules_foreign_cc/archive/refs/tags/0.12.0.tar.gz"
+    target: "rules_foreign_cc-0.12.0"
     checksums:
-      sha256: "2a4d07cd64b0719b39a7c12218a3e507672b82a97b98c6a89d38565894cf7c51"
+      sha256: "a2e6fb56e649c1ee79703e99aa0c9d13c6cc53c8d7a0cbb8797ab2888bbc99a3"
   - name: "abseil_cpp"
     download_url: "https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.0.tar.gz"
     target: "abseil-cpp-20230802.0"
@@ -87,9 +87,9 @@ artifacts:
     checksums:
       sha256: "017e0a91531bfc45be9eaf07e4d8fed33c488b90b58509dbd2e33a33b2648ae6"
   - name: "com_google_zetasql"
-    download_url: "https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT"
-    target: "zetasql-%s" % ZETASQL_COMMIT"
+    download_url: "https://github.com/google/zetasql/archive/refs/tags/2024.08.2.tar.gz"
+    target: "zetasql-2024.08.2"
     checksums:
-      sha256: "651a768cd51627f58aa6de7039aba9ddab22f4b0450521169800555269447840"
+      sha256: "8b900be766e6015b27aba6bcde965ac37f9c22900458e4e10cca7f4c84406e21"
 
 

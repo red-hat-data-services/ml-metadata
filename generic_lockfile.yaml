@@ -4,4 +4,4 @@ artifacts:
   - name: "bazel_root.tar.gz"
     download_url: "https://gitlab.cee.redhat.com/alampare/mlmd-bazel-dist/-/raw/main/bazel_root.tar.gz"
     checksums:
-      sha256: "7bde6d6e24774674b21be0aad1deb4925c7fc60d42448cf63ec8048c3cdb144a"
+      sha256: "57f433cfe467c67b4a509c17ff4637280d5b44dfab604f887e6b676fd23bee0a"

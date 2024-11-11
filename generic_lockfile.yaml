@@ -4,4 +4,4 @@ artifacts:
   - name: "bazel_root_ubi8.tar.gz"
     download_url: "https://drive.google.com/file/d/1G4qrGR9k-1qpdh_fdNDlyhnShmg0i61k/view?usp=drive_link"
     checksums:
-      sha256: "c5b6cea06d4f3d2691f0d4da45a53ae5c33e8373dc1d7212a3fd3c3d1f00caba"
+      sha256: "839310094a7370402cd606f62148357028cbf8a2312d9760f7b7e577d0e7c036"

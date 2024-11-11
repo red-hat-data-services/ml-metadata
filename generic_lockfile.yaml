@@ -78,11 +78,11 @@ artifacts:
     checksums:
       sha256: "8b900be766e6015b27aba6bcde965ac37f9c22900458e4e10cca7f4c84406e21"
   - name: "rules_cc"
-    download_url: "file:C:/tmp/b1c40e1de81913a3c40e5948f78719c28152486d.zip"
+    download_url: "https://github.com/bazelbuild/rules_cc/releases/download/0.1.0/rules_cc-0.1.0.tar.gz"
     checksums:
-      sha256: "d0c573b94a6ef20ef6ff20154a23d0efcb409fb0e1ff0979cec318dfe42f0cdd"
+      sha256: "4b12149a041ddfb8306a8fd0e904e39d673552ce82e4296e96fac9cbf0780e59"
   - name: "rules_java"
-    download_url: "file:C:/tmp/rules_java-4.0.0.tar.gz"
+    download_url: "https://github.com/bazelbuild/rules_java/releases/download/8.3.1/rules_java-8.3.1.tar.gz"
     checksums:
-      sha256: "34b41ec683e67253043ab1a3d1e8b7c61e4e8edefbcad485381328c934d072fe"
+      sha256: "ee786b943e00da4fea7c233e70e5f5b8a01cc69b9341b3f49169f174fe0df1c5"
   

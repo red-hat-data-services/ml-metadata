@@ -32,6 +32,14 @@ def _use_system_lib(ctx, name):
                 return True
     return False
 
+# add protobuf.bzl
+def deps():
+    native.local_repository(
+        name = "com_google_protobuf",
+        path = "/home/user/com_google_protobuf",  # Path to the protobuf directory
+    )
+
+
 # Executes specified command with arguments and calls 'fail' if it exited with
 # non-zero code
 def _execute_and_check_ret_code(repo_ctx, cmd_and_args):

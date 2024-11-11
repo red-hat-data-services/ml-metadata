@@ -2,6 +2,6 @@ metadata:
   version: "1.0"
 artifacts:
   - name: "bazel_root_ubi8.tar.gz"
-    download_url: "https://drive.google.com/file/d/1miAkIPG6CDn3gU0pU_iUy2mRV781od9Y/view?usp=drive_link"
+    download_url: "https://drive.google.com/file/d/1G4qrGR9k-1qpdh_fdNDlyhnShmg0i61k/view?usp=drive_link"
     checksums:
       sha256: "7bde6d6e24774674b21be0aad1deb4925c7fc60d42448cf63ec8048c3cdb144a"

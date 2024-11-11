@@ -18,17 +18,14 @@ RUN dnf install -y \
   findutils \
   python3
 
-RUN ls -la ./cachi2/output/deps/generic
-
 RUN bazel --version 
 RUN bazel help
 
-# Inject the bazel cache and deps into local root bazel cache
-COPY ./cachi2/output/deps/generic/bazel_root.tar.gz /tmp/artifacts/
+RUN ls -la ./cachi2/output/deps/generic
 
-RUN tar --keep-directory-symlink -xzf /tmp/artifacts/bazel_root.tar.gz -C ./ --warning=no-timestamp; chown root:root -R ./_bazel_root
-# Remove folders and symlinks that are not required - these can be removed from the tar.gz directly
-RUN rm -rf ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/external/ml_metadata
+
+# Inject the bazel cache and deps into local root bazel cache
+#COPY ./cachi2/output/deps/generic/bazel_root_ubi8.tar.gz /tmp/artifacts/
 
 
 COPY . /mlmd-src
@@ -39,6 +36,11 @@ RUN mkdir -p /mlmd-src/generic && \
 WORKDIR /mlmd-src
 RUN ls -la /mlmd-src
 RUN ls -la /mlmd-src/generic
+
+RUN tar --keep-directory-symlink -xzf /mlmd-src/generic/bazel_root_ubi8.tar.gz -C ./ --warning=no-timestamp; chown root:root -R ./_bazel_root
+
+# Remove folders and symlinks that are not required - these can be removed from the tar.gz directly
+RUN rm -rf ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/external/ml_metadata
 
 RUN export BAZEL_OUTPUT_BASE=$(bazel info output_base); rsync -ar --remove-source-files /_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/ ${BAZEL_OUTPUT_BASE}/
 RUN rsync -ar --remove-source-files /_bazel_root/cache /root/.cache/bazel/_bazel_root/

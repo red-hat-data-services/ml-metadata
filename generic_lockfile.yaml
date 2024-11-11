@@ -1,7 +1,7 @@
 metadata:
   version: "1.0"
 artifacts:
-  - name: "bazel_root.tar.gz"
-    download_url: "https://gitlab.cee.redhat.com/alampare/mlmd-bazel-dist/-/raw/main/bazel_root.tar.gz"
+  - name: "bazel_root_ubi8.tar.gz"
+    download_url: "https://gitlab.cee.redhat.com/red-hat-data-services/bazel-dist/-/raw/master/bazel_root_ubi8.tar.gz"
     checksums:
       sha256: "57f433cfe467c67b4a509c17ff4637280d5b44dfab604f887e6b676fd23bee0a"

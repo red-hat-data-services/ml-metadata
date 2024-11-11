@@ -24,7 +24,7 @@ RUN bazel --version
 RUN bazel help
 
 # Inject the bazel cache and deps into local root bazel cache
-COPY ./cachi2/output/deps/generic/bazel_root.tar.gz /tmp/artifacts/
+COPY ./cachi2/output/deps/generic/bazel_root_ubi8.tar.gz /tmp/artifacts/
 
 RUN tar --keep-directory-symlink -xzf /tmp/artifacts/bazel_root_ubi8.tar.gz -C ./ --warning=no-timestamp; chown root:root -R ./_bazel_root
 # Remove folders and symlinks that are not required - these can be removed from the tar.gz directly

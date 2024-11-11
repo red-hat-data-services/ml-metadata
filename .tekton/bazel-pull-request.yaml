@@ -186,6 +186,11 @@ spec:
         value: "true"
       - name: log-level
         value: debug
+      - name: config-file-content
+        value: |
+          ---
+          requests_timeout: 10800
+          subprocess_timeout: 36000
       runAfter:
       - clone-repository
       taskRef:

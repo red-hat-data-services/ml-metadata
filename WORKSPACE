@@ -106,10 +106,12 @@ http_archive(
     build_file = "//ml_metadata/third_party:six.BUILD"
 )
 
-# WORKSPACE
-load("//:repositories.bzl", "deps")
-
-deps()  
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "930c2c3b5ecc6c9c12615cf5ad93f1cd6e12d0aba862b572e076259970ac3a53",
+    strip_prefix = "protobuf-3.21.12",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.21.12.tar.gz"],
+)
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 

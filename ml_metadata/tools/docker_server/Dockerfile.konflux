@@ -16,6 +16,7 @@ RUN dnf install -y \
   unzip \
   git \
   findutils \
+  rsync \
   python3
 
 RUN bazel --version 

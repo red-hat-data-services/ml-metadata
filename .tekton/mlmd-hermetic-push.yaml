@@ -81,7 +81,7 @@ spec:
       description: Skip checks against built image
       name: skip-checks
       type: string
-    - default: "true"
+    - default: "false"
       description: Execute the build with network isolation
       name: hermetic
       type: string
@@ -110,7 +110,7 @@ spec:
       name: build-args-file
       type: string
     - default:
-      - linux/x86_64
+      - linux-extra-fast/amd64
       description: List of platforms to build the container images on. The available
         set of values is determined by the configuration of the multi-platform-controller.
       name: build-platforms

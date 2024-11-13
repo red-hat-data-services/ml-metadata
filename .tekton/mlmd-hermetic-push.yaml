@@ -30,8 +30,8 @@ spec:
     value: ml_metadata/tools/docker_server/Dockerfile.konflux
   - name: path-context
     value: .
-  - name: prefetch-input
-    value: [{"path": ".", "type": "rpm"}, {"path": ".", "type": "generic"}]
+  # - name: prefetch-input
+  #   value: [{"path": ".", "type": "rpm"}, {"path": ".", "type": "generic"}]
   pipelineSpec:
     description: |
       This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.

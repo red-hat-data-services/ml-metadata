@@ -16,21 +16,52 @@ RUN dnf install -y \
   unzip \
   git \
   findutils \
+  rsync \
   python3
+
+RUN bazel --version 
+RUN bazel help
+
+RUN ls -la ./cachi2/output/deps/generic
+
+
+# Inject the bazel cache and deps into local root bazel cache
+#COPY ./cachi2/output/deps/generic/bazel_root_ubi8.tar.gz /tmp/artifacts/
 
 
 COPY . /mlmd-src
+RUN mkdir -p /mlmd-src/generic && \
+    cd ./cachi2/output/deps/generic && \
+    for file in *; do cp "$file" /mlmd-src/generic/; done
+
 WORKDIR /mlmd-src
-RUN bazel version
+RUN ls -la /mlmd-src
+RUN ls -la /mlmd-src/generic
+
+RUN tar --keep-directory-symlink -xzf /mlmd-src/generic/bazel_root_540c45b9dde140c9160cb5b2b01cb1a8c10fcbd9.tar.gz -C ./ --warning=no-timestamp; chown root:root -R ./_bazel_root
+
+# Remove folders and symlinks that are not required - these can be removed from the tar.gz directly
+RUN rm -rf ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/external/ml_metadata
+
+RUN export BAZEL_OUTPUT_BASE=$(bazel info output_base); rsync -ar --remove-source-files ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/ ${BAZEL_OUTPUT_BASE}/
+RUN rsync -ar --remove-source-files ./_bazel_root/cache /root/.cache/bazel/_bazel_root/
+
+## Debug code BEGIN ##
+RUN ls -la /root/.cache/bazel/_bazel_root/
+# RUN ls -la /root/.cache/bazel/_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/external/bazel_tools
+#RUN ls -la /root/.cache/bazel/_bazel_root/install/33e5722df4fc6d7b38ceaa01763ff606/
+RUN ls -la /root/.cache/bazel/_bazel_root/install/
+## Debug code END ##
 
 # Running in offline mode with --nofetch arg, cache and deps must be cloned 
 # into the local root bazel cache
 # "-std=c++17" is needed in order to build with ZetaSQL.
-RUN bazel build -c opt --action_env=PATH \
+RUN bazel build -j 16 -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
-  --verbose_failures
+  --nofetch --verbose_failures
+
 
 # copying libmysqlclient source onto THIRD_PARTY folder.
 RUN mkdir -p /mlmd-src/third_party

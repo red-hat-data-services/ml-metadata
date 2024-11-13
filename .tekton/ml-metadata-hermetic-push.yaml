@@ -25,11 +25,38 @@ spec:
     value: quay.io/redhat-user-workloads/rhoai-tenant/ml-metadata-hermetic:{{revision}}
   - name: build-platforms
     value:
-    - linux/x86_64
+    - linux-extra-fast/amd64
   - name: dockerfile
     value: ml_metadata/tools/docker_server/Dockerfile.konflux
   - name: path-context
     value: .
+  - name: prefetch-input
+    value: [{"path": ".", "type": "rpm"}, {"path": ".", "type": "generic"}]
+  taskRunSpecs:
+    - pipelineTaskName: prefetch-dependencies
+      computeResources:
+        requests:
+          cpu: '8'
+          memory: 16Gi
+        limits:
+          cpu: '16'
+          memory: 32Gi
+    - pipelineTaskName: ecosystem-cert-preflight-checks
+      computeResources:
+        requests:
+          cpu: '8'
+          memory: 16Gi
+        limits:
+          cpu: '16'
+          memory: 32Gi
+    - pipelineTaskName: clair-scan
+      computeResources:
+        requests:
+          cpu: '8'
+          memory: 16Gi
+        limits:
+          cpu: '16'
+          memory: 32Gi
   pipelineSpec:
     description: |
       This pipeline is ideal for building multi-arch container images from a Containerfile while maintaining trust after pipeline customization.
@@ -79,7 +106,7 @@ spec:
       description: Skip checks against built image
       name: skip-checks
       type: string
-    - default: "false"
+    - default: "true"
       description: Execute the build with network isolation
       name: hermetic
       type: string
@@ -183,6 +210,13 @@ spec:
         value: $(params.output-image).prefetch
       - name: ociArtifactExpiresAfter
         value: $(params.image-expires-after)
+      - name: log-level
+        value: debug
+      - name: config-file-content
+        value: |
+          ---
+          requests_timeout: 10800
+          subprocess_timeout: 10800
       runAfter:
       - clone-repository
       taskRef:

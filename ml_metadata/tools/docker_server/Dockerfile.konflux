@@ -56,7 +56,7 @@ RUN ls -la /root/.cache/bazel/_bazel_root/install/
 # Running in offline mode with --nofetch arg, cache and deps must be cloned 
 # into the local root bazel cache
 # "-std=c++17" is needed in order to build with ZetaSQL.
-RUN bazel build -j 16 -c opt --action_env=PATH \
+RUN bazel build -j 32 -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \

@@ -2,6 +2,6 @@ metadata:
   version: "1.0"
 artifacts:
   - target: "bazel_offline_dist.tar.gz"
-    download_url: "https://gitlab.cee.redhat.com/red-hat-data-services/mlmd-bazel-dist/-/raw/main/bazel_root_540c45b9dde140c9160cb5b2b01cb1a8c10fcbd9.tar.gz"
+    download_url: "https://mlmd-bazel-dist.s3.us-west-2.amazonaws.com/bazel_root_540c45b9dde140c9160cb5b2b01cb1a8c10fcbd9.tar.gz"
     checksums:
       sha256: "2531f6e51e9607d9f44e22969e2d0071c0cfbb74b0c11443cea507146766f34e"

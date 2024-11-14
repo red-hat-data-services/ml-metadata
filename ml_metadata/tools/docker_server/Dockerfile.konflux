@@ -1,6 +1,6 @@
 #FROM quay.io/bcook/bazel:ubi8-bazel-5 as builder
 
-FROM quay.io/konflux-ci/bazel5-ubi8@sha256:073077dd02506ee51aab7f823f9ce24e39a097673c6d08b3538e21263a418432 as builder
+FROM quay.io/konflux-ci/bazel5-ubi8@sha256:fcb490c19d4c8c4df021135272ba56d62214552a7bae9ab12f29f594cbc82706 as builder
 
 USER root
 

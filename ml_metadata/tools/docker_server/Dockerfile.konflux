@@ -1,9 +1,10 @@
-FROM quay.io/bcook/bazel:ubi8-bazel-5 as builder
+#FROM quay.io/bcook/bazel:ubi8-bazel-5 as builder
+
+FROM quay.io/konflux-ci/bazel5-ubi8@sha256:073077dd02506ee51aab7f823f9ce24e39a097673c6d08b3538e21263a418432 as builder
 
 USER root
 
-RUN dnf update -y -q && \
-  dnf install -y -q \
+RUN dnf install -y \
   which \
   patch \
   gcc \
@@ -15,10 +16,31 @@ RUN dnf update -y -q && \
   unzip \
   git \
   findutils \
+  rsync \
   python3
 
+RUN bazel --version 
+RUN ls -la ./cachi2/output/deps/generic
+
+
 COPY . /mlmd-src
+RUN mkdir -p /mlmd-src/generic && \
+    cd ./cachi2/output/deps/generic && \
+    for file in *; do cp "$file" /mlmd-src/generic/; done
+
 WORKDIR /mlmd-src
+RUN ls -la /mlmd-src /mlmd-src/generic
+
+RUN tar --keep-directory-symlink -xzf /mlmd-src/generic/bazel_offline_dist.tar.gz -C ./ --warning=no-timestamp; chown root:root -R ./_bazel_root
+
+# Remove folders and symlinks that are not required - these can be removed from the tar.gz directly
+RUN rm -rf ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/external/ml_metadata
+
+# Arrange deps from offline dist into the cache
+RUN export BAZEL_OUTPUT_BASE=$(bazel info output_base); rsync -ar --remove-source-files ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/ ${BAZEL_OUTPUT_BASE}/
+RUN rsync -ar --remove-source-files ./_bazel_root/cache /root/.cache/bazel/_bazel_root/
+RUN ls -la /root/.cache/bazel/_bazel_root/ /root/.cache/bazel/_bazel_root/install/
+
 
 # Running in offline mode with --nofetch arg, cache and deps must be cloned 
 # into the local root bazel cache
@@ -27,7 +49,8 @@ RUN bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
-  --verbose_failures
+  --nofetch --verbose_failures
+
 
 # copying libmysqlclient source onto THIRD_PARTY folder.
 RUN mkdir -p /mlmd-src/third_party
@@ -42,8 +65,7 @@ ENV GRPC_PORT "8080"
 ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
-RUN microdnf update -y && \
-  microdnf reinstall -y \
+RUN microdnf install -y \
   tzdata
 
 EXPOSE ${GRPC_PORT}

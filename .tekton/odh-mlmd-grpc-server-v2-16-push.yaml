@@ -1,6 +1,5 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
-#test2
 metadata:
   annotations:
     build.appstudio.openshift.io/repo: https://github.com/red-hat-data-services/ml-metadata?rev={{revision}}
@@ -34,16 +33,18 @@ spec:
   - name: path-context
     value: .
   - name: prefetch-input
-    value: rpm
+    value: [{"path": ".", "type": "rpm"}, {"path": ".", "type": "generic"}]
   taskRunSpecs:
     - pipelineTaskName: build-container
       stepSpecs:
         - name: build
           computeResources:
             requests:
+              cpu: '8'
               memory: 16Gi
             limits:
-              memory: 20Gi
+              cpu: '16'
+              memory: 32Gi
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while reducing network traffic.
@@ -113,7 +114,7 @@ spec:
       description: Skip checks against built image
       name: skip-checks
       type: string
-    - default: "false"
+    - default: "true"
       description: Execute the build with network isolation
       name: hermetic
       type: string
@@ -253,6 +254,13 @@ spec:
         value: $(params.image-expires-after)
       - name: dev-package-managers
         value: "true"
+      - name: log-level
+        value: debug
+      - name: config-file-content
+        value: |
+          ---
+          requests_timeout: 10800
+          subprocess_timeout: 10800
       runAfter:
       - clone-repository
       taskRef:
@@ -270,6 +278,7 @@ spec:
       - name: netrc
         workspace: netrc
     - name: build-container
+      timeout: 2h
       params:
       - name: IMAGE
         value: $(params.output-image)

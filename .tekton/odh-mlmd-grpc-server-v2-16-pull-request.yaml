@@ -16,6 +16,8 @@ metadata:
   name: odh-mlmd-grpc-server-v2-16-on-pull-request
   namespace: rhoai-tenant
 spec:
+  timeouts:
+    pipeline: 4h
   params:
   - name: git-url
     value: '{{source_url}}'
@@ -30,8 +32,18 @@ spec:
   - name: path-context
     value: .
   - name: prefetch-input
-    value: rpm
-
+    value: [{"path": ".", "type": "rpm"}, {"path": ".", "type": "generic"}]
+  taskRunSpecs:
+    - pipelineTaskName: build-container
+      stepSpecs:
+        - name: build
+          computeResources:
+            requests:
+              cpu: '8'
+              memory: 16Gi
+            limits:
+              cpu: '16'
+              memory: 32Gi
   pipelineSpec:
     description: |
       This pipeline is ideal for building container images from a Containerfile while reducing network traffic.
@@ -178,6 +190,13 @@ spec:
         value: $(params.image-expires-after)
       - name: dev-package-managers
         value: "true"
+      - name: log-level
+        value: debug
+      - name: config-file-content
+        value: |
+          ---
+          requests_timeout: 10800
+          subprocess_timeout: 10800
       runAfter:
       - clone-repository
       taskRef:
@@ -185,7 +204,7 @@ spec:
         - name: name
           value: prefetch-dependencies-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-prefetch-dependencies-oci-ta:0.1@sha256:621b13ab4a01a366a2b1d8403cf06b2b7418afd926d13678c4432858514407d3
+          value: quay.io/konflux-ci/tekton-catalog/task-prefetch-dependencies-oci-ta:0.1@sha256:3c11f5de6a0281bf93857f0c85bbbdfeda4cc118337da273fef0c138bda5eebb
         - name: kind
           value: task
         resolver: bundles
@@ -195,6 +214,7 @@ spec:
       - name: netrc
         workspace: netrc
     - name: build-container
+      timeout: 2h
       params:
       - name: IMAGE
         value: $(params.output-image)

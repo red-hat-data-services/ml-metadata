@@ -15,3 +15,4 @@ packages:
   - findutils   
   - python3
   - tzdata
+  - rsync

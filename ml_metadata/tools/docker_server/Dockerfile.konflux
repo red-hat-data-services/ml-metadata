@@ -1,4 +1,4 @@
-FROM quay.io/konflux-ci/bazel5-ubi8@sha256:073077dd02506ee51aab7f823f9ce24e39a097673c6d08b3538e21263a418432 as builder
+FROM quay.io/konflux-ci/bazel5-ubi8:76a1835 as builder
 
 USER root
 

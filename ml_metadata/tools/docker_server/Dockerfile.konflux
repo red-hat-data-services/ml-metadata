@@ -63,7 +63,7 @@ ENV GRPC_PORT "8080"
 ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
-RUN microdnf install -y \
+RUN microdnf reinstall -y \
   tzdata
 
 EXPOSE ${GRPC_PORT}

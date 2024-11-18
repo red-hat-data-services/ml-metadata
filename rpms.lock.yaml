@@ -823,6 +823,13 @@ arches:
     name: unzip
     evr: 6.0-46.el8
     sourcerpm: unzip-6.0-46.el8.src.rpm
+  - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi8/8/x86_64/baseos/os/Packages/t/tzdata-2024b-4.el8.noarch.rpm
+    repoid: ubi-8-baseos-rpms
+    size: 486900
+    checksum: c85495070dca42687df6a1c3ee780a27cbcb82f1844750ea6f642833a44d29b4
+    name: tzdata
+    evr: 2024b-4.el8
+    sourcerpm: tzdata-2024b-4.el8.src.rpm
   source: []
   module_metadata:
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi8/8/x86_64/appstream/os/repodata/902aeeaa3dcd8675eeeb2daa8af1b6d5bfac9356476e0aef08b4b3db628308e2-modules.yaml.gz

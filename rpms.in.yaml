@@ -14,5 +14,9 @@ packages:
   - git   
   - findutils   
   - python3
-  - tzdata
   - rsync
+reinstallPackages:
+  - name: tzdata
+    version: 2024b
+    release: 4.el8
+    architecture: noarch

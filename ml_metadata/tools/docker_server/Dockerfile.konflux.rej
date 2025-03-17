@@ -1,0 +1,19 @@
+diff a/ml_metadata/tools/docker_server/Dockerfile.konflux b/ml_metadata/tools/docker_server/Dockerfile.konflux	(rejected hunks)
+@@ -46,15 +37,13 @@ RUN ls -la /root/.cache/bazel/_bazel_root/ /root/.cache/bazel/_bazel_root/instal
+ RUN bazel build -c opt --action_env=PATH \
+   --define=grpc_no_ares=true \
+   //ml_metadata/metadata_store:metadata_store_server \
+-  --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
+-  --nofetch --verbose_failures
+-
++  --cxxopt="-std=c++17" --host_cxxopt="-std=c++17"
+ 
+ # copying libmysqlclient source onto THIRD_PARTY folder.
+ RUN mkdir -p /mlmd-src/third_party
+ RUN cp -RL /mlmd-src/bazel-mlmd-src/external/libmysqlclient /mlmd-src/third_party/mariadb-connector-c
+ 
+-FROM registry.redhat.io/ubi8/ubi-minimal@sha256:c38cc770631788157f8ea989df65ff30359c9f8af3246fef244b32caed9d5862
++FROM registry.access.redhat.com/ubi9/ubi-minimal:latest@sha256:30bbd445046a3a63f5f5557a3c67dee74e3c8e7855eb0347630b020f3689823f
+ 
+ COPY --from=builder /mlmd-src/bazel-bin/ml_metadata/metadata_store/metadata_store_server /bin/metadata_store_server
+ COPY --from=builder /mlmd-src/third_party /mlmd-src/third_party

@@ -1,8 +1,8 @@
-FROM quay.io/konflux-ci/bazel5-ubi8:76a1835 as builder
+FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:b88227436597e960f70db8eadcaf18ffa5b6d1a615888f709dcae3fba1540c61 as builder
 
 USER root
 
-RUN dnf install -y \
+RUN dnf install -y -q \
   which \
   patch \
   gcc \
@@ -14,31 +14,22 @@ RUN dnf install -y \
   unzip \
   git \
   findutils \
-  rsync \
   python3
 
-RUN bazel --version 
-RUN ls -la ./cachi2/output/deps/generic
-
+# Set up Bazel 5.3.0
+ENV BAZEL_VERSION 5.3.0
+WORKDIR /
+RUN mkdir /bazel && \
+    cd /bazel && \
+    curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
+    curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -o /bazel/LICENSE.txt https://raw.githubusercontent.com/bazelbuild/bazel/master/LICENSE && \
+    chmod +x bazel-*.sh && \
+    ./bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
+    cd / && \
+    rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
 
 COPY . /mlmd-src
-RUN mkdir -p /mlmd-src/generic && \
-    cd ./cachi2/output/deps/generic && \
-    for file in *; do cp "$file" /mlmd-src/generic/; done
-
 WORKDIR /mlmd-src
-RUN ls -la /mlmd-src /mlmd-src/generic
-
-RUN tar --keep-directory-symlink -xzf /mlmd-src/generic/bazel_offline_dist.tar.gz -C ./ --warning=no-timestamp; chown root:root -R ./_bazel_root
-
-# Remove folders and symlinks that are not required - these can be removed from the tar.gz directly
-RUN rm -rf ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/external/ml_metadata
-
-# Arrange deps from offline dist into the cache
-RUN export BAZEL_OUTPUT_BASE=$(bazel info output_base); rsync -ar --remove-source-files ./_bazel_root/13c4dbfe298d1ad9f047b4ec78c9d429/ ${BAZEL_OUTPUT_BASE}/
-RUN rsync -ar --remove-source-files ./_bazel_root/cache /root/.cache/bazel/_bazel_root/
-RUN ls -la /root/.cache/bazel/_bazel_root/ /root/.cache/bazel/_bazel_root/install/
-
 
 # Running in offline mode with --nofetch arg, cache and deps must be cloned 
 # into the local root bazel cache
@@ -63,25 +54,10 @@ ENV GRPC_PORT "8080"
 ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
-RUN microdnf update -y && \
-  microdnf reinstall -y \
+RUN microdnf reinstall -y \
   tzdata
 
-EXPOSE ${GRPC_PORT}
-
-CMD \
+ENTRYPOINT \
   "/bin/metadata_store_server" \
   "--grpc_port=${GRPC_PORT}" \
   "--metadata_store_server_config_file=${METADATA_STORE_SERVER_CONFIG_FILE}"
-
-
-LABEL com.redhat.component="odh-mlmd-grpc-server-container" \
-      name="managed-open-data-hub/odh-mlmd-grpc-server-container-rhel8" \
-      description="Sidecar container for recording and retrieving metadata associated with ML developer and data scientist workflows" \
-      summary="odh-mlmd-grpc-server" \
-      maintainer="['managed-open-data-hub@redhat.com']" \
-      io.openshift.expose-services="" \
-      io.k8s.display-name="odh-mlmd-grpc-server" \
-      io.openshift.tags="odh-mlmd-grpc-server" \
-      io.k8s.description="odh-mlmd-grpc-server" \
-      com.redhat.license_terms="https://www.redhat.com/licenses/Red_Hat_Standard_EULA_20191108.pdf"

@@ -2,21 +2,20 @@ contentOrigin:
   repofiles:
     - ubi.repo
 packages:
-  - which   
-  - patch   
-  - gcc   
-  - clang   
-  - cmake   
-  - make   
-  - openssl   
-  - ca-certificates   
-  - unzip   
-  - git   
-  - findutils   
+  - ca-certificates
+  - clang
+  - cmake
+  - findutils
+  - gcc
+  - git
+  - make
+  - openssl
+  - patch
   - python3
-  - rsync
+  - tzdata
+  - unzip
+  - which
+  - openssl-libs
+  - llvm
 reinstallPackages:
-  - name: tzdata
-    version: 2025a
-    release: 1.el8
-    architecture: noarch
+  - tzdata

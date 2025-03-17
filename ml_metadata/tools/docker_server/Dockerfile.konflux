@@ -18,15 +18,22 @@ RUN dnf install -y \
   findutils \
   python3
 
+RUN ls -la ./cachi2/output/deps/generic
 
 COPY . /mlmd-src
+RUN mkdir -p /mlmd-src/generic && \
+    cd ./cachi2/output/deps/generic && \
+    for file in *; do cp "$file" /mlmd-src/generic/; done
+
 WORKDIR /mlmd-src
+RUN ls -la /mlmd-src
 
 # Running in offline mode with --nofetch arg, cache and deps must be cloned 
 # into the local root bazel cache
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
+  --disk_cache=/mlmd-src/generic \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
   --verbose_failures

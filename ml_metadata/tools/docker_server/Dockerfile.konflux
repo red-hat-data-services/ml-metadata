@@ -74,6 +74,7 @@ CMD \
   "--grpc_port=${GRPC_PORT}" \
   "--metadata_store_server_config_file=${METADATA_STORE_SERVER_CONFIG_FILE}"
 
+USER 65534:65534
 
 LABEL com.redhat.component="odh-mlmd-grpc-server-container" \
       name="managed-open-data-hub/odh-mlmd-grpc-server-container-rhel8" \

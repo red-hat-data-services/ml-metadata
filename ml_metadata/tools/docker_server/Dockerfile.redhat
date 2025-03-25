@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:latest as builder
+FROM registry.access.redhat.com/ubi8/ubi:latest AS builder
 
 USER root
 
@@ -56,6 +56,8 @@ ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 RUN microdnf update -y && \
   microdnf reinstall -y \
   tzdata
+
+USER 65534:65534
 
 ENTRYPOINT \
   "/bin/metadata_store_server" \

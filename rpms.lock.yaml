@@ -828,7 +828,7 @@ arches:
     size: 487380
     checksum: sha256:4fe61db2e8f416867f661457894570b9aa8b0829d90ec92e32d208b83ed6ee13
     name: tzdata
-    evr: 2025a-1.el8
+    evr: 2025b-1.el8
     sourcerpm: tzdata-2025a-1.el8.src.rpm
   source: []
   module_metadata:

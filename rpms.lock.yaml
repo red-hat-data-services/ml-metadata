@@ -825,7 +825,7 @@ arches:
     sourcerpm: unzip-6.0-46.el8.src.rpm
   - url: https://cdn-ubi.redhat.com/content/public/ubi/dist/ubi8/8/x86_64/baseos/os/Packages/t/tzdata-2025b-1.el8.noarch.rpm
     repoid: ubi-8-for-x86_64-baseos-rpms
-    size: 1730961
+    size: 488428
     checksum: sha256:338539f7f0cd2770694153af81e2e65121b050a1bb555ad66a6fb6f562732602
     name: tzdata
     evr: 2025b-1.el8

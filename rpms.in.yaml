@@ -17,6 +17,7 @@ packages:
   - rsync
 reinstallPackages:
   - name: tzdata
-    version: 2025a
+    version: 2025b
     release: 1.el8
     architecture: noarch
+

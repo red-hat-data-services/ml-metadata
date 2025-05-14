@@ -43,7 +43,7 @@ RUN bazel build -c opt --action_env=PATH \
 RUN mkdir -p /mlmd-src/third_party
 RUN cp -RL /mlmd-src/bazel-mlmd-src/external/libmysqlclient /mlmd-src/third_party/mariadb-connector-c
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:a50731d3397a4ee28583f1699842183d4d24fadcc565c4688487af9ee4e13a44
+FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:21ed5a01130d3a77eb4a26a80de70a4433860255b394e95dc2c26817de1da061
 
 COPY --from=builder /mlmd-src/bazel-bin/ml_metadata/metadata_store/metadata_store_server /bin/metadata_store_server
 COPY --from=builder /mlmd-src/third_party /mlmd-src/third_party

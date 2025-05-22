@@ -35,16 +35,13 @@ WORKDIR /mlmd-src
 RUN bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   //ml_metadata/metadata_store:metadata_store_server \
-  --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
-  --verbose_failures \
-  --sandbox_debug
-
+  --cxxopt="-std=c++17" --host_cxxopt="-std=c++17"
 
 # copying libmysqlclient source onto THIRD_PARTY folder.
 RUN mkdir -p /mlmd-src/third_party
 RUN cp -RL /mlmd-src/bazel-mlmd-src/external/libmysqlclient /mlmd-src/third_party/mariadb-connector-c
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal@sha256:92b1d5747a93608b6adb64dfd54515c3c5a360802db4706765ff3d8470df6290
+FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
 COPY --from=builder /mlmd-src/bazel-bin/ml_metadata/metadata_store/metadata_store_server /bin/metadata_store_server
 COPY --from=builder /mlmd-src/third_party /mlmd-src/third_party
@@ -53,7 +50,6 @@ ENV GRPC_PORT "8080"
 ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
-# https://access.redhat.com/solutions/5616681
 RUN microdnf update tzdata -y && \
     microdnf reinstall tzdata -y
 

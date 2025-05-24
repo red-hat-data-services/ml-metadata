@@ -66,5 +66,6 @@ LABEL com.redhat.component="odh-mlmd-grpc-server" \
     description="odh-mlmd-grpc-server" \
     summary="odh-mlmd-grpc-server" \
     io.openshift.expose-services="8080" \
+    io.openshift.tags="odh-mlmd-grpc-server" \
     io.k8s.display-name="odh-mlmd-grpc-server" \
     io.k8s.description="odh-mlmd-grpc-server"

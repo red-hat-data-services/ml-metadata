@@ -252,24 +252,24 @@ http_archive(
 
 # TODO: can we import the proper zetasql version based on some config provided in the build command?
 # Required for Fedora39 and ubi8
-ZETASQL_COMMIT = "ac37cf5c0d80b5605176fc0f29e87b12f00be693" # 08/10/2022
-http_archive(
-    name = "com_google_zetasql",
-    urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
-    strip_prefix = "zetasql-%s" % ZETASQL_COMMIT,
-    #patches = ["//ml_metadata/third_party:zetasql.patch"],
-    sha256 = '651a768cd51627f58aa6de7039aba9ddab22f4b0450521169800555269447840'
-)
-
-# Required for Fedora:38 and ubi9
-# ZETASQL_COMMIT = "f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff" # 02/03/2023
+# ZETASQL_COMMIT = "ac37cf5c0d80b5605176fc0f29e87b12f00be693" # 08/10/2022
 # http_archive(
 #     name = "com_google_zetasql",
 #     urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
 #     strip_prefix = "zetasql-%s" % ZETASQL_COMMIT,
 #     #patches = ["//ml_metadata/third_party:zetasql.patch"],
-#     sha256 = '27e3d8bfd1f76918fc4d7a8f29646b8a0cdca567f921e0bff4a07f79448e92c0'
+#     sha256 = '651a768cd51627f58aa6de7039aba9ddab22f4b0450521169800555269447840'
 # )
+
+# Required for Fedora:38 and ubi9
+ZETASQL_COMMIT = "f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff" # 02/03/2023
+http_archive(
+    name = "com_google_zetasql",
+    urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
+    strip_prefix = "zetasql-%s" % ZETASQL_COMMIT,
+    #patches = ["//ml_metadata/third_party:zetasql.patch"],
+    sha256 = '27e3d8bfd1f76918fc4d7a8f29646b8a0cdca567f921e0bff4a07f79448e92c0'
+)
 
 load("@com_google_zetasql//bazel:zetasql_deps_step_1.bzl", "zetasql_deps_step_1")
 zetasql_deps_step_1()

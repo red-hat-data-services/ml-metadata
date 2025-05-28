@@ -60,3 +60,12 @@ ENTRYPOINT \
   "/bin/metadata_store_server" \
   "--grpc_port=${GRPC_PORT}" \
   "--metadata_store_server_config_file=${METADATA_STORE_SERVER_CONFIG_FILE}"
+
+LABEL com.redhat.component="odh-mlmd-grpc-server" \
+    name="odh-mlmd-grpc-server-rhel9" \
+    description="odh-mlmd-grpc-server" \
+    summary="odh-mlmd-grpc-server" \
+    io.openshift.expose-services="8080" \
+    io.openshift.tags="odh-mlmd-grpc-server" \
+    io.k8s.display-name="odh-mlmd-grpc-server" \
+    io.k8s.description="odh-mlmd-grpc-server"

@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:067f405e0edc049421589e52678962cc2708d305b6efe10815912ef9e8754653 as builder
+FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:2e4eebec441e8bbc3459fcc83ddee0f7d3cfd219097b4110a37d7ff4fe0ff2e9 as builder
 
 USER root
 

@@ -17,6 +17,8 @@ Provides access to a SQLite3 or a MySQL backend. Artifact types and execution
 types can be created on the fly.
 """
 
+from absl import flags
+flags.FLAGS(['pytest'])
 import enum
 import random
 import time

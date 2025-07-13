@@ -2,32 +2,22 @@ FROM registry.access.redhat.com/ubi9/ubi:latest AS builder
 
 USER root
 
-RUN dnf update -y -q && \
-  dnf install -y -q \
-  which \
-  patch \
-  gcc \
-  clang \
-  cmake \
-  make \
-  openssl \
-  ca-certificates \
-  unzip \
-  git \
-  findutils \
-  python3
-
-# Set up Bazel 5.3.0
-ENV BAZEL_VERSION 5.3.0
-WORKDIR /
-RUN mkdir /bazel && \
-    cd /bazel && \
-    curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
-    curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -o /bazel/LICENSE.txt https://raw.githubusercontent.com/bazelbuild/bazel/master/LICENSE && \
-    chmod +x bazel-*.sh && \
-    ./bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
-    cd / && \
-    rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
+RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
+    https://copr.fedorainfracloud.org/coprs/galileo/bazel/repo/epel-9/galileo-bazel-epel-9.repo && \
+    dnf install -y \
+    which \
+    patch \
+    gcc \
+    clang \
+    cmake \
+    make \
+    openssl \
+    ca-certificates \
+    unzip \
+    git \
+    findutils \
+    python3 \
+    bazel5
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
@@ -41,7 +31,7 @@ RUN \
     sed -i "s/$PREVIOUS_ZETASQL_COMMIT/$CURRENT_ZETASQL_COMMIT/g" WORKSPACE && \
     sed -i "s/$PREVIOUS_ZETASQL_SHA/$CURRENT_ZETASQL_SHA/g" WORKSPACE
 
-# Running in offline mode with --nofetch arg, cache and deps must be cloned 
+# Running in offline mode with --nofetch arg, cache and deps must be cloned
 # into the local root bazel cache
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN bazel build -c opt --action_env=PATH \
@@ -63,9 +53,8 @@ ENV GRPC_PORT "8080"
 ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
-RUN microdnf update -y && \
-  microdnf reinstall -y \
-  tzdata
+RUN microdnf reinstall -y tzdata && \
+    microdnf clean all
 
 USER 65534:65534
 

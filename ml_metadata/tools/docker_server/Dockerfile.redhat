@@ -11,7 +11,8 @@ RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
     clang \
     cmake \
     make \
-    openssl \
+    openssl-devel \
+    libcurl-devel \
     ca-certificates \
     unzip \
     git \

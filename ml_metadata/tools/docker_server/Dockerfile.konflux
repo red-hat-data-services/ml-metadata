@@ -15,11 +15,31 @@ RUN dnf install -y -q \
   git \
   findutils \
   python3
+  
+RUN arch=$(uname -m) && \
+  if [ "$arch" = "ppc64le" ]; then \
+    echo "Setting up for ppc64le..." && \
+    dnf install -y -q java-11-openjdk-devel wget; \
+  fi
 
-# Set up Bazel 5.3.0
-ENV BAZEL_VERSION 5.3.0
-WORKDIR /
-RUN mkdir /bazel && \
+
+# Set environment for Bazel and Java
+ENV JAVA_HOME=/usr/lib/jvm/java-11
+ENV PATH=$JAVA_HOME/bin:$PATH
+ENV BAZEL_VERSION=5.3.0
+ENV BAZEL_JOBS=8
+
+RUN arch=$(uname -m) && \
+  if [ "$arch" = "ppc64le" ]; then \
+    echo "Setting up for ppc64le..." && \
+    wget https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-${BAZEL_VERSION} && \
+    chmod +x bazel-${BAZEL_VERSION} && \
+    mv bazel-${BAZEL_VERSION} /usr/local/bin/bazel && \
+    ln -s /usr/local/bin/bazel /usr/bin/bazel && \
+    bazel --version; \
+  else \
+    echo "Setting up for non-ppc64le..." && \
+    mkdir /bazel && \
     cd /bazel && \
     curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
     curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -o /bazel/LICENSE.txt https://raw.githubusercontent.com/bazelbuild/bazel/master/LICENSE && \
@@ -27,6 +47,8 @@ RUN mkdir /bazel && \
     ./bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
     cd / && \
     rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
+  fi
+
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
@@ -34,10 +56,10 @@ WORKDIR /mlmd-src
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
+  --jobs=${BAZEL_JOBS} \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
   --verbose_failures
-
 
 # copying libmysqlclient source onto THIRD_PARTY folder.
 RUN mkdir -p /mlmd-src/third_party

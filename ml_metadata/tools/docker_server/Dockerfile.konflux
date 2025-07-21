@@ -29,6 +29,8 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 ENV BAZEL_VERSION=5.3.0
 ENV BAZEL_JOBS=8
 
+WORKDIR /
+
 RUN arch=$(uname -m) && \
   if [ "$arch" = "ppc64le" ]; then \
     echo "Setting up for ppc64le..." && \
@@ -46,7 +48,7 @@ RUN arch=$(uname -m) && \
     chmod +x bazel-*.sh && \
     ./bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
     cd / && \
-    rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh
+    rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh; \
   fi
 
 

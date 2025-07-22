@@ -17,6 +17,7 @@ RUN dnf install -y -q \
   python3
   
 RUN arch=$(uname -m) && \
+  echo "Detected architecture: $arch" && \
   if [ "$arch" = "ppc64le" ]; then \
     echo "Setting up for ppc64le..." && \
     dnf install -y -q java-11-openjdk-devel wget; \
@@ -39,8 +40,8 @@ RUN arch=$(uname -m) && \
     mv bazel-${BAZEL_VERSION} /usr/local/bin/bazel && \
     ln -s /usr/local/bin/bazel /usr/bin/bazel && \
     bazel --version; \
-  else \
-    echo "Setting up for non-ppc64le..." && \
+  elif [ "$arch" = "x86_64" ]; then \
+    echo "Setting up for x86_64..." && \
     mkdir /bazel && \
     cd /bazel && \
     curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
@@ -49,6 +50,9 @@ RUN arch=$(uname -m) && \
     ./bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
     cd / && \
     rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh; \
+  else \
+    echo "Unsupported architecture: $arch" >&2 && \
+    exit 1; \
   fi
 
 
@@ -58,6 +62,7 @@ WORKDIR /mlmd-src
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
+  --copt="-Wno-maybe-uninitialized" \
   --jobs=${BAZEL_JOBS} \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \

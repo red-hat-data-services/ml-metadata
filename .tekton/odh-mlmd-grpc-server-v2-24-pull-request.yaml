@@ -5,6 +5,7 @@ metadata:
     build.appstudio.openshift.io/repo: https://github.com/red-hat-data-services/ml-metadata?rev={{revision}}
     build.appstudio.redhat.com/commit_sha: '{{revision}}'
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
+    build.appstudio.redhat.com/pull_request_number: "{{pull_request_number}}"
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-comment: "^/build-konflux"
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
@@ -25,12 +26,12 @@ spec:
     value: '{{revision}}'
   - name: additional-tags
     value:
-    - '{{target_branch}}-{{revision}}'
+    - 'pr-{{pull_request_number}}-into-{{target_branch}}'
   - name: additional-labels
     value:
     - version=v2.24.0
   - name: output-image
-    value: quay.io/rhoai/odh-mlmd-grpc-server-rhel9:{{target_branch}}
+    value: quay.io/rhoai/odh-mlmd-grpc-server-rhel9:on-pr-{{revision}}
   - name: dockerfile
     value: ml_metadata/tools/docker_server/Dockerfile.konflux
   - name: path-context

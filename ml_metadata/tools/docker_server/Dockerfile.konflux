@@ -2,62 +2,28 @@ FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:8851294389a8641bd6efcd60f
 
 USER root
 
-RUN dnf install -y -q \
-  which \
-  patch \
-  gcc \
-  clang \
-  cmake \
-  make \
-  openssl \
-  ca-certificates \
-  unzip \
-  git \
-  findutils \
-  python3
-  
-RUN arch=$(uname -m) && \
-  echo "Detected architecture: $arch" && \
-  if [ "$arch" = "ppc64le" ]; then \
-    echo "Setting up for ppc64le..." && \
-    dnf install -y -q java-11-openjdk-devel wget; \
-  fi
-
-
-# Set environment for Bazel and Java
-ENV JAVA_HOME=/usr/lib/jvm/java-11
-ENV PATH=$JAVA_HOME/bin:$PATH
-ENV BAZEL_VERSION=5.3.0
-ENV BAZEL_JOBS=8
-
-WORKDIR /
-
-RUN arch=$(uname -m) && \
-  if [ "$arch" = "ppc64le" ]; then \
-    echo "Setting up for ppc64le..." && \
-    wget https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-${BAZEL_VERSION} && \
-    chmod +x bazel-${BAZEL_VERSION} && \
-    mv bazel-${BAZEL_VERSION} /usr/local/bin/bazel && \
-    ln -s /usr/local/bin/bazel /usr/bin/bazel && \
-    bazel --version; \
-  elif [ "$arch" = "x86_64" ]; then \
-    echo "Setting up for x86_64..." && \
-    mkdir /bazel && \
-    cd /bazel && \
-    curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -O https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
-    curl -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36" -fSsL -o /bazel/LICENSE.txt https://raw.githubusercontent.com/bazelbuild/bazel/master/LICENSE && \
-    chmod +x bazel-*.sh && \
-    ./bazel-$BAZEL_VERSION-installer-linux-x86_64.sh && \
-    cd / && \
-    rm -f /bazel/bazel-$BAZEL_VERSION-installer-linux-x86_64.sh; \
-  else \
-    echo "Unsupported architecture: $arch" >&2 && \
-    exit 1; \
-  fi
-
+RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
+    https://copr.fedorainfracloud.org/coprs/galileo/bazel/repo/epel-9/galileo-bazel-epel-9.repo && \
+    dnf install -y \
+    which \
+    patch \
+    gcc \
+    clang \
+    cmake \
+    make \
+    openssl-devel \
+    libcurl-devel \
+    ca-certificates \
+    unzip \
+    git \
+    findutils \
+    python3 \
+    bazel5
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
+
+ENV BAZEL_JOBS=8
 
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN bazel build -c opt --action_env=PATH \
@@ -82,8 +48,10 @@ ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
 # https://access.redhat.com/solutions/5616681
-RUN microdnf update tzdata -y && \
-    microdnf reinstall tzdata -y
+RUN microdnf reinstall tzdata -y && \
+    microdnf clean all
+
+USER 65534:65534
 
 ENTRYPOINT \
   "/bin/metadata_store_server" \

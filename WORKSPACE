@@ -8,6 +8,7 @@ http_archive(
     build_file = "//ml_metadata:postgresql.BUILD",
     workspace_file_content = "//ml_metadata:postgresql.WORKSPACE",
     sha256 = "1cb8e3a59861be5175878159fc3a41240c379e9aabaabba8288e6cfd6980fff0",
+    patches = ["//ml_metadata/third_party:postgresql.patch"],
     strip_prefix = "postgresql-12.17",
     urls = [
         "https://ftp.postgresql.org/pub/source/v12.17/postgresql-12.17.tar.gz",
@@ -52,10 +53,10 @@ http_archive(
 
 http_archive(
     name = "boringssl",
-    sha256 = "f69738ca17f1dd30ae3ddb1fa7519245044737d27c8a3defa7a94718d9dfd724",
-    strip_prefix = "boringssl-68dcc7f7b816e199c8f373ea0a2d6a4e1f526e2d",
+    sha256 = "579cb415458e9f3642da0a39a72f79fdfe6dc9c1713b3a823f1e276681b9703e",
+    strip_prefix = "boringssl-648cbaf033401b7fe7acdce02f275b06a88aab5c",
     urls = [
-        "https://github.com/google/boringssl/archive/68dcc7f7b816e199c8f373ea0a2d6a4e1f526e2d.tar.gz",
+        "https://github.com/google/boringssl/archive/648cbaf033401b7fe7acdce02f275b06a88aab5c.tar.gz",
     ],
 )
 

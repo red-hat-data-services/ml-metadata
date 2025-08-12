@@ -2,6 +2,8 @@ FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:8851294389a8641bd6efcd60f
 
 USER root
 
+# test 
+
 RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
     https://copr.fedorainfracloud.org/coprs/galileo/bazel/repo/epel-9/galileo-bazel-epel-9.repo && \
     dnf install -y \

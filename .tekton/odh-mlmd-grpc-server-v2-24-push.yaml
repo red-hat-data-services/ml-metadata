@@ -1,5 +1,6 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
+# retrigger Konflux builds to fix https://issues.redhat.com/browse/RHOAIENG-31914
 metadata:
   annotations:
     build.appstudio.openshift.io/repo: https://github.com/red-hat-data-services/ml-metadata?rev={{revision}}
@@ -53,7 +54,9 @@ spec:
     value: true
   - name: build-platforms
     value:
-    - linux/x86_64
+    - linux-mxlarge/x86_64
+    - linux-mxlarge/arm64
+    - linux/ppc64le
   taskRunSpecs:
     - pipelineTaskName: build-images
       stepSpecs:

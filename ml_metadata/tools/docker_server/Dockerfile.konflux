@@ -62,7 +62,8 @@ ENTRYPOINT \
   "--metadata_store_server_config_file=${METADATA_STORE_SERVER_CONFIG_FILE}"
 
 LABEL com.redhat.component="odh-mlmd-grpc-server" \
-    name="odh-mlmd-grpc-server-rhel9" \
+    name="rhoai/odh-mlmd-grpc-server-rhel9" \
+    cpe="cpe:/a:redhat:openshift_ai:2.21::el9" \
     description="odh-mlmd-grpc-server" \
     summary="odh-mlmd-grpc-server" \
     io.openshift.expose-services="8080" \

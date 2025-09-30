@@ -77,7 +77,8 @@ CMD \
 USER 65534:65534
 
 LABEL com.redhat.component="odh-mlmd-grpc-server-container" \
-      name="managed-open-data-hub/odh-mlmd-grpc-server-container-rhel8" \
+      name="rhoai/odh-mlmd-grpc-server-rhel8" \
+      cpe="cpe:/a:redhat:openshift_ai:2.20::el8" \
       description="Sidecar container for recording and retrieving metadata associated with ML developer and data scientist workflows" \
       summary="odh-mlmd-grpc-server" \
       maintainer="['managed-open-data-hub@redhat.com']" \

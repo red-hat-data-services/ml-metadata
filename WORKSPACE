@@ -267,9 +267,9 @@ ZETASQL_COMMIT = "f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff" # 02/03/2023
 http_archive(
     name = "com_google_zetasql",
     urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
-    strip_prefix = "zetasql-%s" % ZETASQL_COMMIT,
+    strip_prefix = "googlesql-%s" % ZETASQL_COMMIT,
     #patches = ["//ml_metadata/third_party:zetasql.patch"],
-    sha256 = '27e3d8bfd1f76918fc4d7a8f29646b8a0cdca567f921e0bff4a07f79448e92c0'
+    sha256 = 'afb6b1673d680e0ae7b21b6b119b0d4c8cce41b075358f87a0d7ad815c2b865d'
 )
 
 load("@com_google_zetasql//bazel:zetasql_deps_step_1.bzl", "zetasql_deps_step_1")

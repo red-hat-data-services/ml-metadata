@@ -41,6 +41,13 @@ spec:
   - name: prefetch-input
     value: |
       [{"path": ".", "type": "rpm"}, {"path": ".", "type": "generic"}]
+  - name: prefetch-config-file-content
+    value: |
+      ---
+      requests_timeout: 10800
+      subprocess_timeout: 10800
+  - name: prefetch-log-level
+    value: debug
   - name: build-source-image
     value: "true"
   - name: build-image-index

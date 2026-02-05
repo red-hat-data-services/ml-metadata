@@ -25,6 +25,8 @@ spec:
   params:
   - name: git-url
     value: '{{source_url}}'
+  - name: rhoai-version
+    value: "2.16.4"
   - name: revision
     value: '{{revision}}'
   - name: additional-tags

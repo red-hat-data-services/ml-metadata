@@ -258,7 +258,7 @@ http_archive(
     urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
     strip_prefix = "googlesql-%s" % ZETASQL_COMMIT,
     #patches = ["//ml_metadata/third_party:zetasql.patch"],
-    sha256 = 'afb6b1673d680e0ae7b21b6b119b0d4c8cce41b075358f87a0d7ad815c2b865d'
+    sha256 = '86f81591ab5ec20457a5394eb2c5c981e6f6c89f4c49c211d096c3acffec1eb1'
 )
 
 # Required for Fedora:38 and ubi9

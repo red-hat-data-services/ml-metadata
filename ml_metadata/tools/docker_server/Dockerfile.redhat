@@ -18,26 +18,39 @@ RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
     git \
     findutils \
     python3 \
-    bazel5
+    bazel5 \
+    && ARCH=$(uname -m) \
+    && case "$ARCH" in \
+         x86_64) \
+           BAZEL_BIN=bazel-6.3.2-linux-x86_64; \
+           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-x86_64 ;; \
+         aarch64) \
+           BAZEL_BIN=bazel-6.3.2-linux-aarch64; \
+           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-arm64 ;; \
+         ppc64le) \
+           BAZEL_BIN=bazel-6.3.2-linux-ppc64le; \
+           BAZEL_URL=https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-6.3.2 ;; \
+         *) echo "unsupported architecture: $ARCH" >&2; exit 1 ;; \
+       esac \
+    && curl -fLo "/usr/bin/${BAZEL_BIN}" "${BAZEL_URL}" \
+    && chmod +x "/usr/bin/${BAZEL_BIN}"
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
 
-# Patch zetasql commit for UBI9 compatibility
-ENV PREVIOUS_ZETASQL_COMMIT ac37cf5c0d80b5605176fc0f29e87b12f00be693
-ENV PREVIOUS_ZETASQL_SHA 651a768cd51627f58aa6de7039aba9ddab22f4b0450521169800555269447840
-ENV CURRENT_ZETASQL_COMMIT f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff
-ENV CURRENT_ZETASQL_SHA 27e3d8bfd1f76918fc4d7a8f29646b8a0cdca567f921e0bff4a07f79448e92c0
-RUN \
-    sed -i "s/$PREVIOUS_ZETASQL_COMMIT/$CURRENT_ZETASQL_COMMIT/g" WORKSPACE && \
-    sed -i "s/$PREVIOUS_ZETASQL_SHA/$CURRENT_ZETASQL_SHA/g" WORKSPACE
-
 # Running in offline mode with --nofetch arg, cache and deps must be cloned
 # into the local root bazel cache
 # "-std=c++17" is needed in order to build with ZetaSQL.
-RUN bazel build -c opt --action_env=PATH \
+RUN ARCH=$(uname -m) && \
+  PPC_COPTS="" && \
+  if [ "$ARCH" = "ppc64le" ]; then \
+    PPC_COPTS='--copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds'; \
+  fi && \
+  bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   --copt="-Wno-maybe-uninitialized" \
+  ${PPC_COPTS} \
+  --jobs=4 \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17"
 

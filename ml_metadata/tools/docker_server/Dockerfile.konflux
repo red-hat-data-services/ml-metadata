@@ -18,7 +18,22 @@ RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
     git \
     findutils \
     python3 \
-    bazel5
+    bazel5 \
+    && ARCH=$(uname -m) \
+    && case "$ARCH" in \
+         x86_64) \
+           BAZEL_BIN=bazel-6.3.2-linux-x86_64; \
+           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-x86_64 ;; \
+         aarch64) \
+           BAZEL_BIN=bazel-6.3.2-linux-aarch64; \
+           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-arm64 ;; \
+         ppc64le) \
+           BAZEL_BIN=bazel-6.3.2-linux-ppc64le; \
+           BAZEL_URL=https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-6.3.2 ;; \
+         *) echo "unsupported architecture: $ARCH" >&2; exit 1 ;; \
+       esac \
+    && curl -fLo "/usr/bin/${BAZEL_BIN}" "${BAZEL_URL}" \
+    && chmod +x "/usr/bin/${BAZEL_BIN}"
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
@@ -26,9 +41,16 @@ WORKDIR /mlmd-src
 ENV BAZEL_JOBS=8
 
 # "-std=c++17" is needed in order to build with ZetaSQL.
-RUN bazel build -c opt --action_env=PATH \
+# upb uses -Werror; ppc64le + _FORTIFY_SOURCE triggers false positives in protoc-gen-upbdefs.
+RUN ARCH=$(uname -m) && \
+  PPC_COPTS="" && \
+  if [ "$ARCH" = "ppc64le" ]; then \
+    PPC_COPTS='--copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds'; \
+  fi && \
+  bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   --copt="-Wno-maybe-uninitialized" \
+  ${PPC_COPTS} \
   --jobs=${BAZEL_JOBS} \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \

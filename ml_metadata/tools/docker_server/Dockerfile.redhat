@@ -42,14 +42,14 @@ WORKDIR /mlmd-src
 # into the local root bazel cache
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN ARCH=$(uname -m) && \
-  PPC_COPTS="" && \
-  if [ "$ARCH" = "ppc64le" ]; then \
-    PPC_COPTS='--copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds'; \
+  EXTRA_COPTS="" && \
+  if [ "$ARCH" = "ppc64le" ] || [ "$ARCH" = "aarch64" ]; then \
+    EXTRA_COPTS='--copt=-D_FORTIFY_SOURCE=0 --host_copt=-D_FORTIFY_SOURCE=0 --copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=stringop-overread --host_copt=-Wno-error=stringop-overread --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds'; \
   fi && \
   bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \
   --copt="-Wno-maybe-uninitialized" \
-  ${PPC_COPTS} \
+  ${EXTRA_COPTS} \
   --jobs=4 \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17"

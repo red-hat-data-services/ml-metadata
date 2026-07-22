@@ -44,7 +44,7 @@ WORKDIR /mlmd-src
 RUN ARCH=$(uname -m) && \
   EXTRA_COPTS="" && \
   if [ "$ARCH" = "ppc64le" ] || [ "$ARCH" = "aarch64" ]; then \
-    EXTRA_COPTS='--copt=-D_FORTIFY_SOURCE=0 --host_copt=-D_FORTIFY_SOURCE=0 --copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=stringop-overread --host_copt=-Wno-error=stringop-overread --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds'; \
+    EXTRA_COPTS='--copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=stringop-overread --host_copt=-Wno-error=stringop-overread --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds --copt=-Wno-error --host_copt=-Wno-error'; \
   fi && \
   bazel build -c opt --action_env=PATH \
   --define=grpc_no_ares=true \

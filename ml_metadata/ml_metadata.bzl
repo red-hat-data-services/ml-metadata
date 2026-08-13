@@ -17,7 +17,11 @@ This module contains build rules for ml_metadata in OSS.
 
 load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-load("@com_google_protobuf//:protobuf.bzl", "cc_proto_library", "py_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_cc//cc:defs.bzl", "cc_proto_library")
+load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
+load("@com_github_grpc_grpc//bazel:python_rules.bzl", "py_grpc_library")
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 def ml_metadata_cc_test(
         name,
@@ -62,20 +66,71 @@ def ml_metadata_proto_library(
         testonly = testonly,
     )
 
-    use_grpc_plugin = None
-    if cc_grpc_version:
-        use_grpc_plugin = True
-    cc_proto_library(
-        name = name,
+    proto_deps = []
+    for d in deps:
+        if d.startswith(":"):
+            proto_deps.append(d + "_proto")
+        elif "ml_metadata/proto" in d or "ml_metadata/simple_types/proto" in d:
+            proto_deps.append(d + "_proto")
+        elif d == "@com_google_protobuf//:cc_wkt_protos":
+            proto_deps.extend([
+                "@com_google_protobuf//:any_proto",
+                "@com_google_protobuf//:api_proto",
+                "@com_google_protobuf//:duration_proto",
+                "@com_google_protobuf//:empty_proto",
+                "@com_google_protobuf//:field_mask_proto",
+                "@com_google_protobuf//:source_context_proto",
+                "@com_google_protobuf//:struct_proto",
+                "@com_google_protobuf//:timestamp_proto",
+                "@com_google_protobuf//:type_proto",
+                "@com_google_protobuf//:wrappers_proto",
+                "@com_google_protobuf//:descriptor_proto",
+            ])
+        else:
+            proto_deps.append(d)
+
+    proto_library(
+        name = name + "_proto",
         srcs = srcs,
-        deps = deps,
-        cc_libs = ["@com_google_protobuf//:protobuf"],
-        protoc = "@com_google_protobuf//:protoc",
-        default_runtime = "@com_google_protobuf//:protobuf",
-        use_grpc_plugin = use_grpc_plugin,
+        deps = proto_deps,
         testonly = testonly,
         visibility = visibility,
     )
+
+    if cc_grpc_version:
+        cc_proto_library(
+            name = name + "_cc_proto",
+            deps = [":" + name + "_proto"],
+            testonly = testonly,
+            visibility = visibility,
+        )
+        cc_grpc_library(
+            name = name + "_grpc",
+            grpc_only = True,
+            srcs = [":" + name + "_proto"],
+            deps = [
+                ":" + name + "_cc_proto",
+                "@com_github_grpc_grpc//:grpc++",
+            ],
+            testonly = testonly,
+            visibility = visibility,
+        )
+        native.cc_library(
+            name = name,
+            deps = [
+                ":" + name + "_cc_proto",
+                ":" + name + "_grpc",
+            ],
+            testonly = testonly,
+            visibility = visibility,
+        )
+    else:
+        cc_proto_library(
+            name = name,
+            deps = [":" + name + "_proto"],
+            testonly = testonly,
+            visibility = visibility,
+        )
 
 def ml_metadata_proto_library_py(
         name,
@@ -88,7 +143,7 @@ def ml_metadata_proto_library_py(
         oss_deps = [],
         use_grpc_plugin = False):
     """Opensource py_proto_library."""
-    _ignore = [proto_library, api_version, oss_deps]
+    _ignore = [proto_library, api_version]
     py_proto_library(
         name = name,
         srcs = srcs,
@@ -116,7 +171,15 @@ def ml_metadata_proto_library_go(
     proto_library_deps = []
     for dep in cc_proto_deps:
         proto_library_deps.append(dep + "_copy")
-    native.proto_library(
+    proto_library_deps.extend([
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:descriptor_proto",
+        "@com_google_protobuf//:field_mask_proto",
+        "@com_google_protobuf//:duration_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ])
+    proto_library(
         name = proto_library_name,
         srcs = srcs,
         deps = proto_library_deps,

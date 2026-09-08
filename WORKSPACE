@@ -15,14 +15,14 @@ http_archive(
     ],
 )
 
-#Install bazel platform version 0.0.6
+# Install bazel platform version 0.0.10 (required for Bazel 6+).
 http_archive(
     name = "platforms",
     urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.6/platforms-0.0.6.tar.gz",
-        "https://github.com/bazelbuild/platforms/releases/download/0.0.6/platforms-0.0.6.tar.gz",
+        "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.10/platforms-0.0.10.tar.gz",
+        "https://github.com/bazelbuild/platforms/releases/download/0.0.10/platforms-0.0.10.tar.gz",
     ],
-    sha256 = "5308fc1d8865406a49427ba24a9ab53087f17f5266a7aabbfc28823f3916e1ca",
+    sha256 = "218efe8ee736d26a3572663b374a253c012b716d8af0c07e842e82f238a0a7ee",
 )
 
 # Install version 0.9.0 of rules_foreign_cc, as default version causes an
@@ -63,20 +63,18 @@ http_archive(
 http_archive(
     name = "org_sqlite",
     build_file = clean_dep("//ml_metadata/third_party:sqlite.BUILD"),
-    sha256 = "87775784f8b22d0d0f1d7811870d39feaa7896319c7c20b849a4181c5a50609b",
-    strip_prefix = "sqlite-amalgamation-3390200",
+    sha256 = "aa73d8748095808471deaa8e6f34aa700e37f2f787f4425744f53fdd15a89c40",
+    strip_prefix = "sqlite-amalgamation-3470200",
     urls = [
-        "https://www.sqlite.org/2022/sqlite-amalgamation-3390200.zip",
+        "https://www.sqlite.org/2024/sqlite-amalgamation-3470200.zip",
     ],
 )
 
 http_archive(
     name = "com_google_googletest",
-    sha256 = "ff7a82736e158c077e76188232eac77913a15dac0b22508c390ab3f88e6d6d86",
-    strip_prefix = "googletest-b6cd405286ed8635ece71c72f118e659f4ade3fb",
-    urls = [
-        "https://github.com/google/googletest/archive/b6cd405286ed8635ece71c72f118e659f4ade3fb.zip",
-    ],
+    sha256 = "7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926",
+    strip_prefix = "googletest-1.15.2",
+    urls = ["https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz"],
 )
 
 http_archive(
@@ -110,11 +108,36 @@ http_archive(
     build_file = "//ml_metadata/third_party:six.BUILD"
 )
 
+# gRPC 1.58.3 (CVE-2024-7246) with protobuf 23.4 per grpc v1.58.3 grpc_deps.bzl.
+http_archive(
+    name = "com_github_grpc_grpc",
+    urls = ["https://github.com/grpc/grpc/archive/refs/tags/v1.58.3.tar.gz"],
+    sha256 = "db820756bdb6b5f247786a0bf2df72299c8a9725fc00fe627a447a6b6482f921",
+    strip_prefix = "grpc-1.58.3",
+)
+
+# Register upb before protobuf_deps() without protobuf's upb.patch, which breaks
+# external upb builds (-Isrc vs -Iexternal/com_google_protobuf/src).
+http_archive(
+    name = "upb",
+    sha256 = "c29fbd26eb19f388a1894099fae5ae599210be22926e1e1694c0ed1284f1c151",
+    strip_prefix = "upb-455cfdb8ae60a1763e6d924e36851c6897a781bb",
+    urls = [
+        "https://github.com/protocolbuffers/upb/archive/455cfdb8ae60a1763e6d924e36851c6897a781bb.tar.gz",
+    ],
+)
+
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "930c2c3b5ecc6c9c12615cf5ad93f1cd6e12d0aba862b572e076259970ac3a53",
-    strip_prefix = "protobuf-3.21.12",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.21.12.tar.gz"],
+    sha256 = "76a33e2136f23971ce46c72fd697cd94dc9f73d56ab23b753c3e16854c90ddfd",
+    strip_prefix = "protobuf-2c5fa078d8e86e5f4bd34e6f4c9ea9e8d7d4d44a",
+    urls = [
+        "https://github.com/protocolbuffers/protobuf/archive/2c5fa078d8e86e5f4bd34e6f4c9ea9e8d7d4d44a.tar.gz",
+    ],
+    patches = [
+        "@com_github_grpc_grpc//third_party:protobuf.patch",
+    ],
+    patch_args = ["-p1"],
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -125,9 +148,9 @@ protobuf_deps()
 http_archive(
     name = "zlib",
     build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
-    sha256 = "ff0ba4c292013dbc27530b3a81e1f9a813cd39de01ca5e0f8bf355702efa593e",
-    strip_prefix = "zlib-1.3",
-    urls = ["https://github.com/madler/zlib/releases/download/v1.3/zlib-1.3.tar.gz"],
+    sha256 = "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+    strip_prefix = "zlib-1.3.1",
+    urls = ["https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz"],
 )
 
 http_archive(
@@ -167,13 +190,6 @@ http_archive(
         "https://storage.googleapis.com/mirror.tensorflow.org/github.com/google/re2/archive/03da4fc0857c285e3a26782f6bc8931c4c950df4.tar.gz",
         "https://github.com/google/re2/archive/03da4fc0857c285e3a26782f6bc8931c4c950df4.tar.gz",
     ],
-)
-
-http_archive(
-    name = "com_github_grpc_grpc",
-    urls = ["https://github.com/grpc/grpc/archive/v1.46.3.tar.gz"],
-    sha256 = "d6cbf22cb5007af71b61c6be316a79397469c58c82a942552a62e708bce60964",
-    strip_prefix = "grpc-1.46.3",
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
@@ -251,25 +267,23 @@ http_archive(
     url = "https://github.com/gflags/gflags/archive/a738fdf9338412f83ab3f26f31ac11ed3f3ec4bd.zip",
 )
 
-# TODO: can we import the proper zetasql version based on some config provided in the build command?
-# Required for Fedora39 and ubi8
-ZETASQL_COMMIT = "ac37cf5c0d80b5605176fc0f29e87b12f00be693" # 08/10/2022
+# UBI9-compatible ZetaSQL (protobuf 23 patch in ml_metadata/third_party/zetasql.patch)
+ZETASQL_COMMIT = "f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff" # 02/03/2023
 http_archive(
     name = "com_google_zetasql",
     urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
     strip_prefix = "googlesql-%s" % ZETASQL_COMMIT,
-    #patches = ["//ml_metadata/third_party:zetasql.patch"],
+    patches = ["//ml_metadata/third_party:zetasql.patch"],
     sha256 = 'afb6b1673d680e0ae7b21b6b119b0d4c8cce41b075358f87a0d7ad815c2b865d'
 )
 
-# Required for Fedora:38 and ubi9
-# ZETASQL_COMMIT = "f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff" # 02/03/2023
+# Older UBI8/Fedora39 pin (no protobuf 23 patch):
+# ZETASQL_COMMIT = "ac37cf5c0d80b5605176fc0f29e87b12f00be693" # 08/10/2022
 # http_archive(
 #     name = "com_google_zetasql",
 #     urls = ["https://github.com/google/zetasql/archive/%s.zip" % ZETASQL_COMMIT],
-#     strip_prefix = "zetasql-%s" % ZETASQL_COMMIT,
-#     #patches = ["//ml_metadata/third_party:zetasql.patch"],
-#     sha256 = '27e3d8bfd1f76918fc4d7a8f29646b8a0cdca567f921e0bff4a07f79448e92c0'
+#     strip_prefix = "googlesql-%s" % ZETASQL_COMMIT,
+#     sha256 = '86f81591ab5ec20457a5394eb2c5c981e6f6c89f4c49c211d096c3acffec1eb1'
 # )
 
 load("@com_google_zetasql//bazel:zetasql_deps_step_1.bzl", "zetasql_deps_step_1")
@@ -298,4 +312,4 @@ ml_metadata_workspace()
 
 # Specify the minimum required bazel version.
 load("@bazel_skylib//lib:versions.bzl", "versions")
-versions.check("5.3.0")
+versions.check("6.3.2")

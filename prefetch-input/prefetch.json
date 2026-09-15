@@ -1,0 +1,4 @@
+[
+  {"type": "rpm", "path": "prefetch-input"},
+  {"type": "generic", "path": "prefetch-input"}
+]

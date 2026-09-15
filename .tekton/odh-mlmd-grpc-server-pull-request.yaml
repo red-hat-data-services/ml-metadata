@@ -35,11 +35,14 @@ spec:
   - name: output-image
     value: quay.io/rhoai/pull-request-pipelines:odh-mlmd-grpc-server-{{revision}}
   - name: dockerfile
-    value: ml_metadata/tools/docker_server/Dockerfile.konflux
+    value: ml_metadata/tools/docker_server/Dockerfile.konflux.hermetic
   - name: path-context
     value: .
   - name: hermetic
-    value: false
+    value: "true"
+  - name: prefetch-input
+    value: >-
+      [{"type":"rpm","path":"prefetch-input"},{"type":"generic","path":"prefetch-input"}]
   - name: prefetch-config-file-content
     value: |
       ---

@@ -1,0 +1,125 @@
+diff --git a/zetasql/public/value.cc b/zetasql/public/value.cc
+--- zetasql/public/value.cc
++++ zetasql/public/value.cc
+@@ -181,8 +181,7 @@
+ 
+   if (static_cast<int64_t>(int32_value) == value &&
+       ((allow_unknown_enum_values &&
+-        enum_type->enum_descriptor()->file()->syntax() !=
+-            google::protobuf::FileDescriptor::SYNTAX_PROTO2) ||
++        !enum_type->enum_descriptor()->is_closed()) ||
+        enum_type->FindName(int32_value, &unused))) {
+     SetMetadataForNonSimpleType(enum_type);
+     enum_value_ = int32_value;
+diff --git a/zetasql/public/proto_util.cc b/zetasql/public/proto_util.cc
+--- zetasql/public/proto_util.cc
++++ zetasql/public/proto_util.cc
+@@ -53,6 +53,7 @@
+ #include "absl/types/span.h"
+ #include "absl/types/variant.h"
+ #include "google/protobuf/descriptor.h"
++#include "google/protobuf/descriptor_legacy.h"
+ #include "google/protobuf/io/coded_stream.h"
+ #include "google/protobuf/wire_format_lite.h"
+ #include "zetasql/base/map_util.h"
+@@ -81,8 +82,9 @@
+     const google::protobuf::FieldDescriptor* field,
+     const LanguageOptions& language_options) {
+   ProtoFieldDefaultOptions options;
+-    if (field->containing_type()->file()->syntax() ==
+-            google::protobuf::FileDescriptor::SYNTAX_PROTO3 &&
++    if (google::protobuf::FileDescriptorLegacy(
++            field->containing_type()->file()).syntax() ==
++            google::protobuf::FileDescriptorLegacy::SYNTAX_PROTO3 &&
+         language_options.LanguageFeatureEnabled(
+             FEATURE_V_1_3_IGNORE_PROTO3_USE_DEFAULTS)) {
+     options.ignore_use_default_annotations = true;
+@@ -417,8 +419,7 @@
+   }
+ 
+   // TODO: Update to use feature.enum when that is available.
+-  if (enum_descriptor->file()->syntax() ==
+-          google::protobuf::FileDescriptor::SYNTAX_PROTO2 &&
++  if (enum_descriptor->is_closed() &&
+       !enum_descriptor->FindValueByNumber(*value)) {
+     // Proto2 hides unknown enums, and returns false for has_.
+     return true;
+diff --git a/zetasql/analyzer/resolver_expr.cc b/zetasql/analyzer/resolver_expr.cc
+--- zetasql/analyzer/resolver_expr.cc
++++ zetasql/analyzer/resolver_expr.cc
+@@ -37,6 +37,7 @@
+ #include "zetasql/base/logging.h"
+ #include "google/protobuf/descriptor.pb.h"
+ #include "google/protobuf/descriptor.h"
++#include "google/protobuf/descriptor_legacy.h"
+ #include "zetasql/analyzer/analytic_function_resolver.h"
+ #include "zetasql/analyzer/column_cycle_detector.h"
+ #include "zetasql/analyzer/expr_matching_helpers.h"
+@@ -7265,12 +7266,12 @@
+ 
+   if (!ProtoType::GetUseDefaultsExtension(
+           resolved_field_access->field_descriptor()) &&
+-      (resolved_field_access->expr()
++      (google::protobuf::FileDescriptorLegacy(
++           resolved_field_access->expr()
+                ->type()
+                ->AsProto()
+                ->descriptor()
+-               ->file()
+-               ->syntax() != google::protobuf::FileDescriptor::SYNTAX_PROTO3 ||
++               ->file()).syntax() != google::protobuf::FileDescriptorLegacy::SYNTAX_PROTO3 ||
+        !language().LanguageFeatureEnabled(
+            FEATURE_V_1_3_IGNORE_PROTO3_USE_DEFAULTS))) {
+     return MakeSqlErrorAt(ast_location)
+diff --git a/zetasql/resolved_ast/sql_builder.cc b/zetasql/resolved_ast/sql_builder.cc
+--- zetasql/resolved_ast/sql_builder.cc
++++ zetasql/resolved_ast/sql_builder.cc
+@@ -52,6 +52,7 @@
+ #include "zetasql/base/atomic_sequence_num.h"
+ #include "zetasql/base/logging.h"
+ #include "google/protobuf/descriptor.h"
++#include "google/protobuf/descriptor_legacy.h"
+ #include "zetasql/common/thread_stack.h"
+ #include "zetasql/public/analyzer.h"
+ #include "zetasql/public/annotation/collation.h"
+@@ -1002,8 +1003,9 @@
+   // value of this node is not null.
+   return !type_with_annotations->Equals(node->type()) ||
+          (node->type()->IsSimpleType() &&
+-          node->expr()->type()->AsProto()->descriptor()->file()->syntax() !=
+-              google::protobuf::FileDescriptor::SYNTAX_PROTO3 &&
++          google::protobuf::FileDescriptorLegacy(
++              node->expr()->type()->AsProto()->descriptor()->file()).syntax() !=
++              google::protobuf::FileDescriptorLegacy::SYNTAX_PROTO3 &&
+           !ProtoType::GetUseDefaultsExtension(node->field_descriptor()) &&
+           node->default_value().is_valid() && !node->default_value().is_null());
+ }
+diff --git a/zetasql/resolved_ast/validator.cc b/zetasql/resolved_ast/validator.cc
+--- zetasql/resolved_ast/validator.cc
++++ zetasql/resolved_ast/validator.cc
+@@ -31,6 +31,7 @@
+ #include "zetasql/base/logging.h"
+ #include "zetasql/base/varsetter.h"
+ #include "google/protobuf/descriptor.h"
++#include "google/protobuf/descriptor_legacy.h"
+ #include "zetasql/analyzer/filter_fields_path_validator.h"
+ #include "zetasql/common/errors.h"
+ #include "zetasql/common/thread_stack.h"
+@@ -741,13 +742,13 @@
+       VALIDATOR_RET_CHECK(!get_proto_field->type()->IsProto());
+       VALIDATOR_RET_CHECK(ProtoType::GetUseDefaultsExtension(
+                               get_proto_field->field_descriptor()) ||
+-                          get_proto_field->expr()
++                          google::protobuf::FileDescriptorLegacy(
++                              get_proto_field->expr()
+                                   ->type()
+                                   ->AsProto()
+                                   ->descriptor()
+-                                  ->file()
+-                                  ->syntax() ==
+-                              google::protobuf::FileDescriptor::SYNTAX_PROTO3
++                                  ->file()).syntax() ==
++                              google::protobuf::FileDescriptorLegacy::SYNTAX_PROTO3
+       );
+     }
+     VALIDATOR_RET_CHECK(get_proto_field->default_value().is_valid());

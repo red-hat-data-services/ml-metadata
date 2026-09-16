@@ -1,0 +1,33 @@
+# Online dependency analysis only; never use this Dockerfile in a hermetic PipelineRun.
+FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:c5cc9c221baa8eb13093f90c31bb58c04d83f6afd14510d3496691f92566f99e as builder
+
+USER root
+
+RUN dnf install -y \
+    which patch gcc gcc-c++ clang cmake make openssl-devel libcurl-devel \
+    ca-certificates unzip git findutils python3 python3-devel tar gzip && \
+    dnf clean all
+
+RUN case "$(uname -m)" in \
+      x86_64) url=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-x86_64 ;; \
+      aarch64) url=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-arm64 ;; \
+      ppc64le) url=https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-6.3.2 ;; \
+      *) exit 1 ;; \
+    esac && curl -fL --retry 3 "$url" -o /usr/local/bin/bazel && \
+    chmod 0755 /usr/local/bin/bazel
+
+COPY . /mlmd-src
+WORKDIR /mlmd-src
+
+ENV BAZEL_JOBS=8
+
+# "-std=c++17" is needed in order to build with ZetaSQL.
+RUN bazel build --nobuild -c opt --action_env=PATH \
+  --experimental_repository_resolved_file=/tmp/resolved.bzl \
+  --experimental_workspace_rules_log_file=/tmp/workspace.log \
+  --define=grpc_no_ares=true \
+  --copt="-Wno-maybe-uninitialized" \
+  --jobs=${BAZEL_JOBS} \
+  //ml_metadata/metadata_store:metadata_store_server \
+  --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \
+  --verbose_failures

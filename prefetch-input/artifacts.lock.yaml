@@ -1,0 +1,297 @@
+{
+  "metadata": {
+    "version": "1.0"
+  },
+  "artifacts": [
+    {
+      "download_url": "https://github.com/gflags/gflags/archive/a738fdf9338412f83ab3f26f31ac11ed3f3ec4bd.zip",
+      "checksum": "sha256:017e0a91531bfc45be9eaf07e4d8fed33c488b90b58509dbd2e33a33b2648ae6",
+      "filename": "017e0a91531bfc45be9eaf07e4d8fed33c488b90b58509dbd2e33a33b2648ae6"
+    },
+    {
+      "download_url": "https://mirrors.kernel.org/gnu/bison/bison-3.3.2.tar.xz",
+      "checksum": "sha256:039ee45b61d95e5003e7e8376f9080001b4066ff357bde271b7faace53b9d804",
+      "filename": "039ee45b61d95e5003e7e8376f9080001b4066ff357bde271b7faace53b9d804"
+    },
+    {
+      "download_url": "https://dl.google.com/go/go1.18.linux-ppc64le.tar.gz",
+      "checksum": "sha256:070351edac192483c074b38d08ec19251a83f8210765a532a84c3dcf8aec04d8",
+      "filename": "070351edac192483c074b38d08ec19251a83f8210765a532a84c3dcf8aec04d8"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_cc/archive/818289e5613731ae410efb54218a4077fb9dbb03.zip",
+      "checksum": "sha256:0adbd6f567291ad526e82c765e15aed33cea5e256eeba129f1501142c2c56610",
+      "filename": "0adbd6f567291ad526e82c765e15aed33cea5e256eeba129f1501142c2c56610"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/grpc-bazel-mirror/github.com/cncf/xds/archive/e9ce68804cb4e64cab5a52e3c8baf840d4ff87b7.tar.gz",
+      "checksum": "sha256:0d33b83f8c6368954e72e7785539f0d272a8aba2f6e2e336ed15fd1514bc9899",
+      "filename": "0d33b83f8c6368954e72e7785539f0d272a8aba2f6e2e336ed15fd1514bc9899"
+    },
+    {
+      "download_url": "https://github.com/pallets/markupsafe/archive/2.1.1.tar.gz",
+      "checksum": "sha256:0f83b6d1bf6fa65546221d42715034e7e654845583a84906c5936590f9a7ad8f",
+      "filename": "0f83b6d1bf6fa65546221d42715034e7e654845583a84906c5936590f9a7ad8f"
+    },
+    {
+      "download_url": "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz",
+      "checksum": "sha256:105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a",
+      "filename": "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+    },
+    {
+      "download_url": "https://ftp.postgresql.org/pub/source/v12.17/postgresql-12.17.tar.gz",
+      "checksum": "sha256:1cb8e3a59861be5175878159fc3a41240c379e9aabaabba8288e6cfd6980fff0",
+      "filename": "1cb8e3a59861be5175878159fc3a41240c379e9aabaabba8288e6cfd6980fff0"
+    },
+    {
+      "download_url": "https://github.com/pallets/jinja/archive/3.0.1.tar.gz",
+      "checksum": "sha256:1e37a6f86c29fa8ace108ea72b41d2d5c5bd67d79be14bfeca3ba6eb37d789de",
+      "filename": "1e37a6f86c29fa8ace108ea72b41d2d5c5bd67d79be14bfeca3ba6eb37d789de"
+    },
+    {
+      "download_url": "https://github.com/envoyproxy/protoc-gen-validate/archive/4694024279bdac52b77e22dc87808bd0fd732b69.tar.gz",
+      "checksum": "sha256:1e490b98005664d149b379a9529a6aa05932b8a11b76b4cd86f3d22d76346f47",
+      "filename": "1e490b98005664d149b379a9529a6aa05932b8a11b76b4cd86f3d22d76346f47"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.10/platforms-0.0.10.tar.gz",
+      "checksum": "sha256:218efe8ee736d26a3572663b374a253c012b716d8af0c07e842e82f238a0a7ee",
+      "filename": "218efe8ee736d26a3572663b374a253c012b716d8af0c07e842e82f238a0a7ee"
+    },
+    {
+      "download_url": "https://github.com/jmillikin/rules_m4/releases/download/v0.1/m4-gnulib-788db09a9f88abbef73c97e8d7291c40455336d8.tar.xz",
+      "checksum": "sha256:27ef79e649c95856e05f82414977f5e05d009310f91916b64806d1c61f913485",
+      "filename": "27ef79e649c95856e05f82414977f5e05d009310f91916b64806d1c61f913485"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_foreign_cc/archive/refs/tags/0.9.0.tar.gz",
+      "checksum": "sha256:2a4d07cd64b0719b39a7c12218a3e507672b82a97b98c6a89d38565894cf7c51",
+      "filename": "2a4d07cd64b0719b39a7c12218a3e507672b82a97b98c6a89d38565894cf7c51"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/grpc-bazel-mirror/github.com/googleapis/google-cloud-cpp/archive/refs/tags/v2.14.0.tar.gz",
+      "checksum": "sha256:371d01b03c7e2604d671b8fa1c86710abe3b524a78bc2705a6bb4de715696755",
+      "filename": "371d01b03c7e2604d671b8fa1c86710abe3b524a78bc2705a6bb4de715696755"
+    },
+    {
+      "download_url": "https://github.com/jmillikin/rules_bison/releases/download/v0.1/bison-gnulib-788db09a9f88abbef73c97e8d7291c40455336d8.tar.xz",
+      "checksum": "sha256:4350696d531852118f3735a0e2d1091746388392c27d582f0cc241b6a39fe493",
+      "filename": "4350696d531852118f3735a0e2d1091746388392c27d582f0cc241b6a39fe493"
+    },
+    {
+      "download_url": "https://github.com/unicode-org/icu/releases/download/release-65-1/icu4c-65_1-src.tgz",
+      "checksum": "sha256:53e37466b3d6d6d01ead029e3567d873a43a5d1c668ed2278e253b683136d948",
+      "filename": "53e37466b3d6d6d01ead029e3567d873a43a5d1c668ed2278e253b683136d948"
+    },
+    {
+      "download_url": "https://github.com/google/boringssl/archive/648cbaf033401b7fe7acdce02f275b06a88aab5c.tar.gz",
+      "checksum": "sha256:579cb415458e9f3642da0a39a72f79fdfe6dc9c1713b3a823f1e276681b9703e",
+      "filename": "579cb415458e9f3642da0a39a72f79fdfe6dc9c1713b3a823f1e276681b9703e"
+    },
+    {
+      "download_url": "https://github.com/abseil/abseil-cpp/archive/refs/tags/20230802.0.tar.gz",
+      "checksum": "sha256:59d2976af9d6ecf001a81a35749a6e551a335b949d34918cfade07737b9d93c5",
+      "filename": "59d2976af9d6ecf001a81a35749a6e551a335b949d34918cfade07737b9d93c5"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/grpc-bazel-mirror/github.com/googleapis/googleapis/archive/2f9af297c84c55c8b871ba4495e01ade42476c92.tar.gz",
+      "checksum": "sha256:5bb6b0253ccf64b53d6c7249625a7e3f6c3bc6402abd52d3778bfa48258703a0",
+      "filename": "5bb6b0253ccf64b53d6c7249625a7e3f6c3bc6402abd52d3778bfa48258703a0"
+    },
+    {
+      "download_url": "https://github.com/protocolbuffers/utf8_range/archive/de0b4a8ff9b5d4c98108bdfe723291a33c52c54f.zip",
+      "checksum": "sha256:5da960e5e5d92394c809629a03af3c7709d2d3d0ca731dacb3a9fb4bf28f7702",
+      "filename": "5da960e5e5d92394c809629a03af3c7709d2d3d0ca731dacb3a9fb4bf28f7702"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.9.0.tar.gz",
+      "checksum": "sha256:5fa3c738d33acca3b97622a13a741129f67ef43f5fdfcec63b29374cc0574c29",
+      "filename": "5fa3c738d33acca3b97622a13a741129f67ef43f5fdfcec63b29374cc0574c29"
+    },
+    {
+      "download_url": "https://github.com/google/glog/archive/96a2f23dca4cc7180821ca5f32e526314395d26a.zip",
+      "checksum": "sha256:6281aa4eeecb9e932d7091f99872e7b26fa6aacece49c15ce5b14af2b7ec050f",
+      "filename": "6281aa4eeecb9e932d7091f99872e7b26fa6aacece49c15ce5b14af2b7ec050f"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.27.0/rules_go-v0.27.0.tar.gz",
+      "checksum": "sha256:69de5c704a05ff37862f7e0f5534d4f479418afc21806c887db544a316f3cb6b",
+      "filename": "69de5c704a05ff37862f7e0f5534d4f479418afc21806c887db544a316f3cb6b"
+    },
+    {
+      "download_url": "https://github.com/MariaDB/mariadb-connector-c/archive/refs/tags/v3.0.8-release.tar.gz",
+      "checksum": "sha256:6cddafd9419a338ed3d87ed7729d935ce54ce944340a1810e1cd9ba0f0e8601e",
+      "filename": "6cddafd9419a338ed3d87ed7729d935ce54ce944340a1810e1cd9ba0f0e8601e"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/grpc-bazel-mirror/github.com/envoyproxy/data-plane-api/archive/e53e7bbd012f81965f2e79848ad9a58ceb67201f.tar.gz",
+      "checksum": "sha256:6fd3496c82919a433219733819a93b56699519a193126959e9c4fedc25e70663",
+      "filename": "6fd3496c82919a433219733819a93b56699519a193126959e9c4fedc25e70663"
+    },
+    {
+      "download_url": "https://github.com/protocolbuffers/protobuf/archive/2c5fa078d8e86e5f4bd34e6f4c9ea9e8d7d4d44a.tar.gz",
+      "checksum": "sha256:76a33e2136f23971ce46c72fd697cd94dc9f73d56ab23b753c3e16854c90ddfd",
+      "filename": "76a33e2136f23971ce46c72fd697cd94dc9f73d56ab23b753c3e16854c90ddfd"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.zip",
+      "checksum": "sha256:7979ece89e82546b0dcd1dff7538c34b5a6ebc9148971106f0e3705444f00665",
+      "filename": "7979ece89e82546b0dcd1dff7538c34b5a6ebc9148971106f0e3705444f00665"
+    },
+    {
+      "download_url": "https://dl.google.com/go/go1.18.linux-arm64.tar.gz",
+      "checksum": "sha256:7ac7b396a691e588c5fb57687759e6c4db84a2a3bbebb0765f4b38e5b1c5b00e",
+      "filename": "7ac7b396a691e588c5fb57687759e6c4db84a2a3bbebb0765f4b38e5b1c5b00e"
+    },
+    {
+      "download_url": "https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz",
+      "checksum": "sha256:7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926",
+      "filename": "7b42b4d6ed48810c5362c265a17faebe90dc2373c885e5216439d37927f02926"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz",
+      "checksum": "sha256:8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2",
+      "filename": "8a298e832762eda1830597d64fe7db58178aa84cd5926d76d5b744d6558941c2"
+    },
+    {
+      "download_url": "https://github.com/jmillikin/rules_bison/releases/download/v0.2.1/rules_bison-v0.2.1.tar.xz",
+      "checksum": "sha256:9577455967bfcf52f9167274063ebb74696cb0fd576e4226e14ed23c5d67a693",
+      "filename": "9577455967bfcf52f9167274063ebb74696cb0fd576e4226e14ed23c5d67a693"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
+      "checksum": "sha256:97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
+      "filename": "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44"
+    },
+    {
+      "download_url": "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz",
+      "checksum": "sha256:9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+      "filename": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23"
+    },
+    {
+      "download_url": "https://github.com/pybind/pybind11_bazel/archive/faf56fb3df11287f26dbc66fdedf60a2fc2c6631.tar.gz",
+      "checksum": "sha256:a2b107b06ffe1049696e132d39987d80e24d73b131d87f1af581c2cb271232f8",
+      "filename": "a2b107b06ffe1049696e132d39987d80e24d73b131d87f1af581c2cb271232f8"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_proto/archive/f7a30f6f80006b591fa7c437fe5a951eb10bcbcf.zip",
+      "checksum": "sha256:a4382f78723af788f0bc19fd4c8411f44ffe0a72723670a34692ffad56ada3ac",
+      "filename": "a4382f78723af788f0bc19fd4c8411f44ffe0a72723670a34692ffad56ada3ac"
+    },
+    {
+      "download_url": "https://www.sqlite.org/2024/sqlite-amalgamation-3470200.zip",
+      "checksum": "sha256:aa73d8748095808471deaa8e6f34aa700e37f2f787f4425744f53fdd15a89c40",
+      "filename": "aa73d8748095808471deaa8e6f34aa700e37f2f787f4425744f53fdd15a89c40"
+    },
+    {
+      "download_url": "https://github.com/google/zetasql/archive/f764f4e986ac1516ab5ae95e6d6ce2f4416cc6ff.zip",
+      "checksum": "sha256:afb6b1673d680e0ae7b21b6b119b0d4c8cce41b075358f87a0d7ad815c2b865d",
+      "filename": "afb6b1673d680e0ae7b21b6b119b0d4c8cce41b075358f87a0d7ad815c2b865d"
+    },
+    {
+      "download_url": "https://github.com/jmillikin/rules_m4/releases/download/v0.2.2/rules_m4-v0.2.2.tar.xz",
+      "checksum": "sha256:b0309baacfd1b736ed82dc2bb27b0ec38455a31a3d5d20f8d05e831ebeef1a8e",
+      "filename": "b0309baacfd1b736ed82dc2bb27b0ec38455a31a3d5d20f8d05e831ebeef1a8e"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/grpc-bazel-mirror/github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz",
+      "checksum": "sha256:b7e13f0b4259e80c3070b583c2f39e53153085a6918718b1c710caf7037572b0",
+      "filename": "b7e13f0b4259e80c3070b583c2f39e53153085a6918718b1c710caf7037572b0"
+    },
+    {
+      "download_url": "https://github.com/protocolbuffers/upb/archive/455cfdb8ae60a1763e6d924e36851c6897a781bb.tar.gz",
+      "checksum": "sha256:c29fbd26eb19f388a1894099fae5ae599210be22926e1e1694c0ed1284f1c151",
+      "filename": "c29fbd26eb19f388a1894099fae5ae599210be22926e1e1694c0ed1284f1c151"
+    },
+    {
+      "download_url": "https://github.com/protocolbuffers/rules_ruby/archive/5cf6ff74161d7f985b9bf86bb3c5fb16cef6337b.zip",
+      "checksum": "sha256:c88dd69eb50fcfd7fbc5d7db79adc6631ef0e1d80b3c94efe33ac5ee3ccc37f7",
+      "filename": "c88dd69eb50fcfd7fbc5d7db79adc6631ef0e1d80b3c94efe33ac5ee3ccc37f7"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_swift/archive/3eeeb53cebda55b349d64c9fc144e18c5f7c0eb8.tar.gz",
+      "checksum": "sha256:d0833bc6dad817a367936a5f902a0c11318160b5e80a20ece35fb85a5675c886",
+      "filename": "d0833bc6dad817a367936a5f902a0c11318160b5e80a20ece35fb85a5675c886"
+    },
+    {
+      "download_url": "https://github.com/google/differential-privacy/archive/refs/tags/v2.0.0.tar.gz",
+      "checksum": "sha256:db54f30a4176a07543c54932690afa5932097203cb4be357e9310f99f624886c",
+      "filename": "db54f30a4176a07543c54932690afa5932097203cb4be357e9310f99f624886c"
+    },
+    {
+      "download_url": "https://github.com/grpc/grpc/archive/refs/tags/v1.58.3.tar.gz",
+      "checksum": "sha256:db820756bdb6b5f247786a0bf2df72299c8a9725fc00fe627a447a6b6482f921",
+      "filename": "db820756bdb6b5f247786a0bf2df72299c8a9725fc00fe627a447a6b6482f921"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.24.0/bazel-gazelle-v0.24.0.tar.gz",
+      "checksum": "sha256:de69a09dc70417580aabf20a28619bb3ef60d038470c7cf8442fafcf627c21cb",
+      "filename": "de69a09dc70417580aabf20a28619bb3ef60d038470c7cf8442fafcf627c21cb"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/ftpmirror.gnu.org/gnu/make/make-4.3.tar.gz",
+      "checksum": "sha256:e05fdde47c5f7ca45cb697e973894ff4f5d79e13b750ed57d7b66d8defc78e19",
+      "filename": "e05fdde47c5f7ca45cb697e973894ff4f5d79e13b750ed57d7b66d8defc78e19"
+    },
+    {
+      "download_url": "https://github.com/nlohmann/json/archive/v3.7.3.zip",
+      "checksum": "sha256:e109cd4a9d1d463a62f0a81d7c6719ecd780a52fb80a22b901ed5b6fe43fb45b",
+      "filename": "e109cd4a9d1d463a62f0a81d7c6719ecd780a52fb80a22b901ed5b6fe43fb45b"
+    },
+    {
+      "download_url": "https://dl.google.com/go/go1.18.linux-amd64.tar.gz",
+      "checksum": "sha256:e85278e98f57cdb150fe8409e6e5df5343ecb13cebf03a5d5ff12bd55a80264f",
+      "filename": "e85278e98f57cdb150fe8409e6e5df5343ecb13cebf03a5d5ff12bd55a80264f"
+    },
+    {
+      "download_url": "https://mirror.bazel.build/github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz",
+      "checksum": "sha256:e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995",
+      "filename": "e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/mirror.tensorflow.org/github.com/google/re2/archive/03da4fc0857c285e3a26782f6bc8931c4c950df4.tar.gz",
+      "checksum": "sha256:ef516fb84824a597c4d5d0d6d330daedb18363b5a99eda87d027e6bdd9cba299",
+      "filename": "ef516fb84824a597c4d5d0d6d330daedb18363b5a99eda87d027e6bdd9cba299"
+    },
+    {
+      "download_url": "https://github.com/jmillikin/rules_flex/releases/download/v0.2/rules_flex-v0.2.tar.xz",
+      "checksum": "sha256:f1685512937c2e33a7ebc4d5c6cf38ed282c2ce3b7a9c7c0b542db7e5db59d52",
+      "filename": "f1685512937c2e33a7ebc4d5c6cf38ed282c2ce3b7a9c7c0b542db7e5db59d52"
+    },
+    {
+      "download_url": "https://github.com/abseil/abseil-py/archive/a1c1af693b9f15bd0f67fe383cb05e7cc955556b.tar.gz",
+      "checksum": "sha256:f233de3482bd724a68c4998e03761536ca99dc8b1fc5941fe04f5cf9a39feb54",
+      "filename": "f233de3482bd724a68c4998e03761536ca99dc8b1fc5941fe04f5cf9a39feb54"
+    },
+    {
+      "download_url": "https://mirrors.kernel.org/gnu/m4/m4-1.4.18.tar.xz",
+      "checksum": "sha256:f2c1e86ca0a404ff281631bdc8377638992744b175afb806e25871a24a934e07",
+      "filename": "f2c1e86ca0a404ff281631bdc8377638992744b175afb806e25871a24a934e07"
+    },
+    {
+      "download_url": "https://storage.googleapis.com/grpc-bazel-mirror/github.com/bazelbuild/apple_support/releases/download/1.3.1/apple_support.1.3.1.tar.gz",
+      "checksum": "sha256:f4fdf5c9b42b92ea12f229b265d74bb8cedb8208ca7a445b383c9f866cf53392",
+      "filename": "f4fdf5c9b42b92ea12f229b265d74bb8cedb8208ca7a445b383c9f866cf53392"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/rules_apple/releases/download/1.1.3/rules_apple.1.1.3.tar.gz",
+      "checksum": "sha256:f94e6dddf74739ef5cb30f000e13a2a613f6ebfa5e63588305a71fce8a8a9911",
+      "filename": "f94e6dddf74739ef5cb30f000e13a2a613f6ebfa5e63588305a71fce8a8a9911"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-x86_64",
+      "checksum": "sha256:e78fc3394deae5408d6f49a15c7b1e615901969ecf6e50d55ef899996b0b8458",
+      "filename": "bazel-6.3.2-linux-x86_64"
+    },
+    {
+      "download_url": "https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-arm64",
+      "checksum": "sha256:9d88a0b206e22cceb4afe0060be7f294b423f5f49b18750fbbd7abd47cea4054",
+      "filename": "bazel-6.3.2-linux-aarch64"
+    },
+    {
+      "download_url": "https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-6.3.2",
+      "checksum": "sha256:68aaf41da45c1ff3fd4fc9950e7eb15e8a34c6865ec4bbda6a317abd3cd1d400",
+      "filename": "bazel-6.3.2-linux-ppc64le"
+    }
+  ]
+}

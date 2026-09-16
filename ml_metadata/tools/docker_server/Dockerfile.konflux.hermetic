@@ -2,38 +2,15 @@ FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:c5cc9c221baa8eb13093f90c3
 
 USER root
 
-RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
-    https://copr.fedorainfracloud.org/coprs/galileo/bazel/repo/epel-9/galileo-bazel-epel-9.repo && \
-    dnf install -y \
-    which \
-    patch \
-    gcc \
-    clang \
-    cmake \
-    make \
-    openssl-devel \
-    libcurl-devel \
-    ca-certificates \
-    unzip \
-    git \
-    findutils \
-    python3 \
-    bazel5 \
-    && ARCH=$(uname -m) \
-    && case "$ARCH" in \
-         x86_64) \
-           BAZEL_BIN=bazel-6.3.2-linux-x86_64; \
-           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-x86_64 ;; \
-         aarch64) \
-           BAZEL_BIN=bazel-6.3.2-linux-aarch64; \
-           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-arm64 ;; \
-         ppc64le) \
-           BAZEL_BIN=bazel-6.3.2-linux-ppc64le; \
-           BAZEL_URL=https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-6.3.2 ;; \
-         *) echo "unsupported architecture: $ARCH" >&2; exit 1 ;; \
-       esac \
-    && curl -fLo "/usr/bin/${BAZEL_BIN}" "${BAZEL_URL}" \
-    && chmod +x "/usr/bin/${BAZEL_BIN}"
+# Konflux injects the prefetched RPM repositories into /etc/yum.repos.d.
+# Restrict dnf to the local repositories even when testing outside Konflux.
+RUN dnf --setopt=reposdir=/cachi2/output/deps/rpm/$(uname -m)/repos.d install -y \
+    which patch gcc gcc-c++ clang cmake make openssl-devel libcurl-devel \
+    ca-certificates unzip git findutils python3 python3-devel tar gzip && \
+    dnf clean all
+
+COPY prefetch-input/prepare-bazel-cache.sh /usr/local/bin/prepare-bazel-cache
+RUN bash /usr/local/bin/prepare-bazel-cache
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
@@ -42,6 +19,8 @@ ENV BAZEL_JOBS=8
 
 # "-std=c++17" is needed in order to build with ZetaSQL.
 RUN bazel build -c opt --action_env=PATH \
+  --repository_cache=/opt/bazel-repository-cache \
+  --experimental_repository_disable_download \
   --define=grpc_no_ares=true \
   --copt="-Wno-maybe-uninitialized" \
   --jobs=${BAZEL_JOBS} \
@@ -63,7 +42,7 @@ ENV METADATA_STORE_SERVER_CONFIG_FILE ""
 
 # Introduces tzdata package here to avoid LoadTimeZone check failed error in the metadata store server.
 # https://access.redhat.com/solutions/5616681
-RUN microdnf reinstall tzdata -y && \
+RUN microdnf --setopt=reposdir=/cachi2/output/deps/rpm/$(uname -m)/repos.d reinstall tzdata -y && \
     microdnf clean all
 
 USER 65534:65534

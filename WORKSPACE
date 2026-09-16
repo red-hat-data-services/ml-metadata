@@ -111,6 +111,8 @@ http_archive(
 # gRPC 1.58.3 (CVE-2024-7246) with protobuf 23.4 per grpc v1.58.3 grpc_deps.bzl.
 http_archive(
     name = "com_github_grpc_grpc",
+    patches = ["//ml_metadata/third_party:grpc-go-sdk.patch"],
+    patch_args = ["-p1"],
     urls = ["https://github.com/grpc/grpc/archive/refs/tags/v1.58.3.tar.gz"],
     sha256 = "db820756bdb6b5f247786a0bf2df72299c8a9725fc00fe627a447a6b6482f921",
     strip_prefix = "grpc-1.58.3",
@@ -162,6 +164,7 @@ http_archive(
 
 http_archive(
     name = "pybind11",
+    sha256 = "111014b516b625083bef701df7880f78c2243835abdb263065b6b59b960b6bad",
     urls = [
         "https://github.com/pybind/pybind11/archive/v2.10.1.tar.gz",
     ],

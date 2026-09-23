@@ -18,7 +18,22 @@ RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
     git \
     findutils \
     python3 \
-    bazel5
+    bazel5 \
+    && ARCH=$(uname -m) \
+    && case "$ARCH" in \
+         x86_64) \
+           BAZEL_BIN=bazel-6.3.2-linux-x86_64; \
+           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-x86_64 ;; \
+         aarch64) \
+           BAZEL_BIN=bazel-6.3.2-linux-aarch64; \
+           BAZEL_URL=https://github.com/bazelbuild/bazel/releases/download/6.3.2/bazel-6.3.2-linux-arm64 ;; \
+         ppc64le) \
+           BAZEL_BIN=bazel-6.3.2-linux-ppc64le; \
+           BAZEL_URL=https://ftp2.osuosl.org/pub/ppc64el/bazel/el8/bazel-6.3.2 ;; \
+         *) echo "unsupported architecture: $ARCH" >&2; exit 1 ;; \
+       esac \
+    && curl -fLo "/usr/bin/${BAZEL_BIN}" "${BAZEL_URL}" \
+    && chmod +x "/usr/bin/${BAZEL_BIN}"
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src

@@ -1,0 +1,24 @@
+packages:
+  - bazel5
+  - clang
+  - cmake
+  - findutils
+  - gcc
+  - git
+  - libcurl-devel
+  - make
+  - openssl-devel
+  - patch
+  - python3
+  - unzip
+  - which
+reinstallPackages:
+  - tzdata
+contentOrigin:
+  repofiles:
+    - ./ubi.repo
+    - ./copr-galileo-bazel.repo
+arches:
+  - x86_64
+  - aarch64
+  - ppc64le

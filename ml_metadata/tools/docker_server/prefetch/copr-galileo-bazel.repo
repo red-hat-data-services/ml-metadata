@@ -1,0 +1,10 @@
+[copr:copr.fedorainfracloud.org:galileo:bazel]
+name=Copr repo for bazel owned by galileo
+baseurl=https://download.copr.fedorainfracloud.org/results/galileo/bazel/epel-9-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-copr-galileo-bazel
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1

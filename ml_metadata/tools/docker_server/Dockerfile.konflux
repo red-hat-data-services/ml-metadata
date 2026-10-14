@@ -2,8 +2,10 @@ FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:16e9e43d99e181463513cc84a
 
 USER root
 
-RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
-    https://copr.fedorainfracloud.org/coprs/galileo/bazel/repo/epel-9/galileo-bazel-epel-9.repo && \
+COPY ml_metadata/tools/docker_server/prefetch/copr-galileo-bazel.pub \
+    /etc/pki/rpm-gpg/RPM-GPG-KEY-copr-galileo-bazel
+
+RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-copr-galileo-bazel && \
     dnf install -y \
     which \
     patch \

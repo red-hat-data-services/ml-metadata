@@ -1,0 +1,31 @@
+---
+contentOrigin:
+  repofiles:
+    - ubi.repo
+# Resolve a complete closure for both container stages. Do not use the builder's
+# installed RPM database: the runtime stage has a different base image.
+context:
+  bare: true
+arches:
+  - x86_64
+  - aarch64
+  - ppc64le
+packages:
+  - which
+  - patch
+  - gcc
+  - gcc-c++
+  - clang
+  - cmake
+  - make
+  - openssl-devel
+  - libcurl-devel
+  - ca-certificates
+  - unzip
+  - git
+  - findutils
+  - python3
+  - python3-devel
+  - tar
+  - gzip
+  - tzdata

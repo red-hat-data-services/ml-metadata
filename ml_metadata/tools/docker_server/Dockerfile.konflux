@@ -2,8 +2,9 @@ FROM registry.access.redhat.com/ubi9/ubi:latest@sha256:48393e4261b2544f652c915b3
 
 USER root
 
-RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
-    https://copr.fedorainfracloud.org/coprs/galileo/bazel/repo/epel-9/galileo-bazel-epel-9.repo && \
+COPY ml_metadata/tools/docker_server/prefetch/repos.d/copr-galileo-bazel-pubkey.gpg /etc/pki/rpm-gpg/
+
+RUN rpmkeys --import /etc/pki/rpm-gpg/copr-galileo-bazel-pubkey.gpg && \
     dnf install -y \
     which \
     patch \
@@ -18,7 +19,7 @@ RUN curl -o /etc/yum.repos.d/copr-galileo-bazel.repo \
     git \
     findutils \
     python3 \
-    bazel5
+    bazel6
 
 COPY . /mlmd-src
 WORKDIR /mlmd-src
@@ -26,9 +27,21 @@ WORKDIR /mlmd-src
 ENV BAZEL_JOBS=8
 
 # "-std=c++17" is needed in order to build with ZetaSQL.
-RUN bazel build -c opt --action_env=PATH \
+# upb uses -Werror; aarch64/ppc64le + _FORTIFY_SOURCE triggers false positives in protoc-gen-upbdefs.
+# The WORKSPACE external dependencies are prefetched by hermeto (see
+# prefetch/artifacts.lock.yaml) into a bazel repository cache layout and made
+# available to the build at /cachi2/output/deps/generic: the hermetic build has
+# no network access.
+RUN ARCH=$(uname -m) && \
+  EXTRA_COPTS="" && \
+  if [ "$ARCH" = "ppc64le" ] || [ "$ARCH" = "aarch64" ]; then \
+    EXTRA_COPTS='--copt=-Wno-error=stringop-overflow --host_copt=-Wno-error=stringop-overflow --copt=-Wno-error=stringop-overread --host_copt=-Wno-error=stringop-overread --copt=-Wno-error=array-bounds --host_copt=-Wno-error=array-bounds --copt=-Wno-error --host_copt=-Wno-error'; \
+  fi && \
+  bazel build -c opt --action_env=PATH \
+  --repository_cache=/cachi2/output/deps/generic \
   --define=grpc_no_ares=true \
   --copt="-Wno-maybe-uninitialized" \
+  ${EXTRA_COPTS} \
   --jobs=${BAZEL_JOBS} \
   //ml_metadata/metadata_store:metadata_store_server \
   --cxxopt="-std=c++17" --host_cxxopt="-std=c++17" \

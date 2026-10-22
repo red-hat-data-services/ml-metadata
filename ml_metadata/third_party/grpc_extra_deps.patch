@@ -1,0 +1,32 @@
+--- bazel/grpc_extra_deps.bzl
++++ bazel/grpc_extra_deps.bzl
+@@ -21,7 +21,7 @@
+ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+ load("@envoy_api//bazel:repositories.bzl", "api_dependencies")
+ load("@google_cloud_cpp//bazel:google_cloud_cpp_deps.bzl", "google_cloud_cpp_deps")
+-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
++load("@io_bazel_rules_go//go:deps.bzl", "go_download_sdk", "go_register_toolchains", "go_rules_dependencies")
+ load("@upb//bazel:workspace_deps.bzl", "upb_deps")
+ 
+ def grpc_extra_deps(ignore_version_differences = False):
+@@ -54,7 +54,19 @@
+     api_dependencies()
+ 
+     go_rules_dependencies()
+-    go_register_toolchains(version = "1.18")
++    # Patched by ml_metadata/third_party:grpc_extra_deps.patch - declare the
++    # go_sdk repository with explicit checksums so bazel can serve the Go SDK
++    # from the repository cache (required for the hermetic konflux build,
++    # which has no network access). Later go_register_toolchains() calls
++    # (ours, zetasql's) are no-ops because go_sdk already exists.
++    go_download_sdk(
++        name = "go_sdk",
++        sdks = {
++            "linux_amd64": ("go1.18.linux-amd64.tar.gz", "e85278e98f57cdb150fe8409e6e5df5343ecb13cebf03a5d5ff12bd55a80264f"),
++            "linux_arm64": ("go1.18.linux-arm64.tar.gz", "7ac7b396a691e588c5fb57687759e6c4db84a2a3bbebb0765f4b38e5b1c5b00e"),
++            "linux_ppc64le": ("go1.18.linux-ppc64le.tar.gz", "070351edac192483c074b38d08ec19251a83f8210765a532a84c3dcf8aec04d8"),
++        },
++    )
+     gazelle_dependencies()
+ 
+     # Pull-in the go 3rd party dependencies for protoc_gen_validate, which is

@@ -114,6 +114,11 @@ http_archive(
     urls = ["https://github.com/grpc/grpc/archive/refs/tags/v1.58.3.tar.gz"],
     sha256 = "db820756bdb6b5f247786a0bf2df72299c8a9725fc00fe627a447a6b6482f921",
     strip_prefix = "grpc-1.58.3",
+    # Patched to pass explicit go1.18 SDK checksums to go_register_toolchains,
+    # so the Go SDK download is served from the bazel repository cache in the
+    # hermetic konflux build (see grpc_extra_deps.patch).
+    patches = ["//ml_metadata/third_party:grpc_extra_deps.patch"],
+    patch_tool = "patch",
 )
 
 # Register upb before protobuf_deps() without protobuf's upb.patch, which breaks

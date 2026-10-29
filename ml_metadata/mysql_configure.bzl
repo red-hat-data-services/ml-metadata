@@ -18,19 +18,14 @@ Pulls mariadb-connector-c github repo and builds it.
 Clients can then depend on `@libmysqlclient` to use the MYSQL C API.
 """
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 
 def mysql_configure():
-    # http_archive on the release tag instead of new_git_repository, so the
-    # archive is checksum-pinned and can be served from the bazel repository
-    # cache (required for the hermetic konflux build, which has no network
-    # access). Same tag and patches as the previous git fetch.
-    http_archive(
+    new_git_repository(
         name = "libmysqlclient",
         build_file = "//ml_metadata:libmysqlclient.BUILD",
         workspace_file = "//ml_metadata:libmysqlclient.WORKSPACE",
-        url = "https://github.com/MariaDB/mariadb-connector-c/archive/refs/tags/v3.0.8-release.tar.gz",
-        sha256 = "6cddafd9419a338ed3d87ed7729d935ce54ce944340a1810e1cd9ba0f0e8601e",
-        strip_prefix = "mariadb-connector-c-3.0.8-release",
+        remote = "https://github.com/MariaDB/mariadb-connector-c.git",
+        tag = "v3.0.8-release",
         patches = ["//ml_metadata/third_party:libmysqlclient.patch"],
     )
